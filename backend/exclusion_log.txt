@@ -1,0 +1,74 @@
+
+NYC TAXI TRIP DATA - EXCLUSION LOG
+Generated: 2026-02-17 22:14:55
+
+======================================================================
+SUMMARY
+======================================================================
+
+Original Records:     7,667,792
+Final Records:        50,000
+Excluded Records:     7,617,792
+Exclusion Rate:       99.35%
+
+======================================================================
+EXCLUSION CRITERIA
+======================================================================
+
+The following records were excluded during processing:
+
+1. DUPLICATES
+   - Exact duplicate records removed
+
+2. MISSING VALUES
+   - Records with missing critical fields:
+     - passenger_count, trip_distance, fare_amount
+     - pickup/dropoff datetime
+
+3. PASSENGER COUNT OUTLIERS
+   - Outside range: 1 - 6 passengers
+
+4. TRIP DISTANCE OUTLIERS
+   - Outside range: 0.1 - 100 miles
+
+5. FARE AMOUNT OUTLIERS
+   - Outside range: $2.5 - $500
+
+6. TRIP DURATION OUTLIERS
+   - Outside range: 1 - 180 minutes
+
+7. SPEED OUTLIERS
+   - Outside range: 0.1 - 80 mph
+
+8. FARE PER MILE OUTLIERS
+   - Fare per mile > $100
+
+======================================================================
+JUSTIFICATION
+======================================================================
+
+These exclusion criteria were applied to ensure data quality and 
+remove physical/logical impossibilities:
+
+- Negative or zero values for distances, fares, and counts are not valid
+- Extremely high values likely represent data entry errors or system glitches
+- Speed calculations outside NYC driving conditions are physically impossible
+- Missing critical fields prevent meaningful analysis
+
+All thresholds were set based on:
+- NYC TLC regulations and policies
+- Physical constraints of urban taxi operations
+- Statistical analysis of data distribution
+- Industry best practices
+
+======================================================================
+NEXT STEPS FOR MEMBER B (Database)
+======================================================================
+
+1. Review this exclusion log
+2. Load cleaned_taxi_data.csv into the database
+3. Verify record counts match this log
+4. Create indexes on datetime and location columns
+5. Run test queries to validate data integrity
+
+======================================================================

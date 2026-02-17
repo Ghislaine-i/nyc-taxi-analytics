@@ -1,0 +1,134 @@
+[2026-02-17 22:13:32] [INFO] Starting data processing pipeline...
+[2026-02-17 22:13:32] [INFO] Timestamp: 2026-02-17 22:13:32.702263
+[2026-02-17 22:13:32] [INFO] ======================================================================
+[2026-02-17 22:13:32] [INFO] STEP 1: LOADING RAW DATA
+[2026-02-17 22:13:32] [INFO] ======================================================================
+[2026-02-17 22:13:32] [INFO] Loading CSV file: ../data\yellow_tripdata.csv
+[2026-02-17 22:14:00] [INFO] [OK] Loaded 7,667,792 records
+[2026-02-17 22:14:00] [INFO]   Columns: ['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'RatecodeID', 'store_and_fwd_flag', 'PULocationID', 'DOLocationID', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge']
+[2026-02-17 22:14:00] [INFO]   Memory usage: 1338.20 MB
+[2026-02-17 22:14:03] [INFO] 
+Loading taxi zone lookup data...
+[2026-02-17 22:14:03] [INFO] [OK] Loaded 265 taxi zones
+[2026-02-17 22:14:03] [INFO] 
+======================================================================
+[2026-02-17 22:14:03] [INFO] STEP 2: INITIAL DATA EXPLORATION
+[2026-02-17 22:14:03] [INFO] ======================================================================
+[2026-02-17 22:14:03] [INFO] 
+Dataset Shape: 7,667,792 rows [OK] 18 columns
+[2026-02-17 22:14:03] [INFO] 
+Missing Values:
+[2026-02-17 22:14:04] [INFO]   congestion_surcharge: 4,855,978 (63.33%)
+[2026-02-17 22:14:04] [INFO] 
+Data Types:
+[2026-02-17 22:14:04] [INFO]   VendorID: int64
+[2026-02-17 22:14:04] [INFO]   tpep_pickup_datetime: str
+[2026-02-17 22:14:04] [INFO]   tpep_dropoff_datetime: str
+[2026-02-17 22:14:04] [INFO]   passenger_count: int64
+[2026-02-17 22:14:04] [INFO]   trip_distance: float64
+[2026-02-17 22:14:04] [INFO]   RatecodeID: int64
+[2026-02-17 22:14:04] [INFO]   store_and_fwd_flag: str
+[2026-02-17 22:14:04] [INFO]   PULocationID: int64
+[2026-02-17 22:14:04] [INFO]   DOLocationID: int64
+[2026-02-17 22:14:04] [INFO]   payment_type: int64
+[2026-02-17 22:14:04] [INFO]   fare_amount: float64
+[2026-02-17 22:14:04] [INFO]   extra: float64
+[2026-02-17 22:14:04] [INFO]   mta_tax: float64
+[2026-02-17 22:14:04] [INFO]   tip_amount: float64
+[2026-02-17 22:14:04] [INFO]   tolls_amount: float64
+[2026-02-17 22:14:04] [INFO]   improvement_surcharge: float64
+[2026-02-17 22:14:04] [INFO]   total_amount: float64
+[2026-02-17 22:14:04] [INFO]   congestion_surcharge: float64
+[2026-02-17 22:14:04] [INFO] 
+Numeric Column Statistics:
+[2026-02-17 22:14:04] [INFO]   VendorID: min=1.00, max=4.00, mean=1.64
+[2026-02-17 22:14:04] [INFO]   passenger_count: min=0.00, max=9.00, mean=1.57
+[2026-02-17 22:14:04] [INFO]   trip_distance: min=0.00, max=831.80, mean=2.80
+[2026-02-17 22:14:04] [INFO]   RatecodeID: min=1.00, max=99.00, mean=1.06
+[2026-02-17 22:14:04] [INFO]   PULocationID: min=1.00, max=265.00, mean=165.50
+[2026-02-17 22:14:04] [INFO] 
+----------------------------------------------------------------------
+[2026-02-17 22:14:04] [INFO] Removing Duplicates...
+[2026-02-17 22:14:04] [INFO] ----------------------------------------------------------------------
+[2026-02-17 22:14:24] [INFO]   Removed: 0 duplicate records
+[2026-02-17 22:14:24] [INFO]   Remaining: 7,667,792 records
+[2026-02-17 22:14:24] [INFO] 
+----------------------------------------------------------------------
+[2026-02-17 22:14:24] [INFO] Handling Missing Values...
+[2026-02-17 22:14:24] [INFO] ----------------------------------------------------------------------
+[2026-02-17 22:14:24] [INFO]   Dropping rows with missing values in: ['passenger_count', 'trip_distance', 'fare_amount', 'tpep_pickup_datetime', 'tpep_dropoff_datetime']
+[2026-02-17 22:14:24] [INFO]   Dropped: 0 rows with missing critical data
+[2026-02-17 22:14:24] [INFO]   Filled 4,855,978 missing values in congestion_surcharge with 0
+[2026-02-17 22:14:24] [INFO]   Remaining: 7,667,792 records
+[2026-02-17 22:14:25] [INFO] 
+----------------------------------------------------------------------
+[2026-02-17 22:14:25] [INFO] Removing Outliers...
+[2026-02-17 22:14:25] [INFO] ----------------------------------------------------------------------
+[2026-02-17 22:14:26] [INFO]   Passenger count (1-6): removed 117,438
+[2026-02-17 22:14:27] [INFO]   Trip distance (0.1-100 mi): removed 68,815
+[2026-02-17 22:14:29] [INFO]   Fare amount ($2.5-$500): removed 5,470
+[2026-02-17 22:14:29] [INFO] 
+  Total outliers removed: 191,723
+[2026-02-17 22:14:29] [INFO]   Remaining: 7,476,069 records
+[2026-02-17 22:14:29] [INFO] 
+======================================================================
+[2026-02-17 22:14:29] [INFO] STEP 3: FEATURE ENGINEERING
+[2026-02-17 22:14:29] [INFO] ======================================================================
+[2026-02-17 22:14:29] [INFO] 
+1. Creating Trip Duration feature...
+[2026-02-17 22:14:40] [INFO]    [OK] Trip duration calculated
+[2026-02-17 22:14:40] [INFO]      Range: -84280.5 - 43648.0 minutes
+[2026-02-17 22:14:40] [INFO]      Average: 16.7 minutes
+[2026-02-17 22:14:41] [INFO]      Removed 38,713 trips with invalid duration
+[2026-02-17 22:14:41] [INFO] 
+2. Creating Average Speed feature...
+[2026-02-17 22:14:41] [INFO]    [OK] Average speed calculated
+[2026-02-17 22:14:42] [INFO]      Range: 0.0 - 2682.0 mph
+[2026-02-17 22:14:42] [INFO]      Average: 11.7 mph
+[2026-02-17 22:14:43] [INFO]      Removed 421 trips with unrealistic speed
+[2026-02-17 22:14:43] [INFO] 
+3. Creating Fare per Mile feature...
+[2026-02-17 22:14:43] [INFO]    [OK] Fare per mile calculated
+[2026-02-17 22:14:44] [INFO]      Range: $0.25 - $5000.00 per mile
+[2026-02-17 22:14:44] [INFO]      Average: $6.00 per mile
+[2026-02-17 22:14:45] [INFO]      Removed 1,440 trips with extreme fare/mile ratio
+[2026-02-17 22:14:45] [INFO] 
+4. Creating Time-based features...
+[2026-02-17 22:14:48] [INFO]    [OK] Time features created: hour, day_of_week, day_name, month
+[2026-02-17 22:14:48] [INFO] 
+  Total records removed during feature engineering: 40,574
+[2026-02-17 22:14:48] [INFO]   Final record count: 7,435,495
+[2026-02-17 22:14:49] [INFO] 
+======================================================================
+[2026-02-17 22:14:49] [INFO] STEP 4: INTEGRATING ZONE LOOKUP DATA
+[2026-02-17 22:14:49] [INFO] ======================================================================
+[2026-02-17 22:14:49] [INFO] 
+  Merging pickup location data...
+[2026-02-17 22:14:50] [INFO]     [OK] Matched 7,434,036 / 7,435,495 pickup locations
+[2026-02-17 22:14:50] [INFO] 
+  Merging dropoff location data...
+[2026-02-17 22:14:51] [INFO]     [OK] Matched 7,422,034 / 7,435,495 dropoff locations
+[2026-02-17 22:14:51] [INFO] 
+======================================================================
+[2026-02-17 22:14:51] [INFO] STEP 5: DATA SAMPLING
+[2026-02-17 22:14:51] [INFO] ======================================================================
+[2026-02-17 22:14:51] [INFO]   Dataset too large (7,435,495 records)
+[2026-02-17 22:14:51] [INFO]   Sampling 50,000 records (random seed: 42)
+[2026-02-17 22:14:52] [INFO]   [OK] Sampled 50,000 records
+[2026-02-17 22:14:52] [INFO] 
+======================================================================
+[2026-02-17 22:14:52] [INFO] STEP 6: EXPORTING CLEANED DATA
+[2026-02-17 22:14:52] [INFO] ======================================================================
+[2026-02-17 22:14:52] [INFO] 
+  Exporting to: cleaned_taxi_data.csv
+[2026-02-17 22:14:52] [INFO]   Records: 50,000
+[2026-02-17 22:14:52] [INFO]   Columns: 29
+[2026-02-17 22:14:54] [INFO]   [OK] Export complete!
+[2026-02-17 22:14:54] [INFO]   File size: 10.21 MB
+[2026-02-17 22:14:55] [INFO]   [OK] Copy saved to: ../shared\cleaned_taxi_data.csv
+[2026-02-17 22:14:55] [INFO] 
+======================================================================
+[2026-02-17 22:14:55] [INFO] CREATING EXCLUSION LOG
+[2026-02-17 22:14:55] [INFO] ======================================================================
+[2026-02-17 22:14:55] [INFO] 
+  [OK] Exclusion log saved to: exclusion_log.txt
