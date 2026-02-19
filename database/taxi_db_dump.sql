@@ -286,12 +286,12 @@ CREATE TABLE trips (
     total_amount              REAL,                -- Total charged ($)
     congestion_surcharge      REAL,                -- Congestion surcharge ($)
 
-    -- ── DERIVED FEATURES (engineered by Member A) ───────────────────
+    -- ── DERIVED FEATURES (engineered during processing) ───────────────
     trip_duration_minutes     REAL,                -- Duration in minutes (dropoff - pickup)
     avg_speed_mph             REAL,                -- Average speed (distance / duration)
     fare_per_mile             REAL,                -- Fare efficiency (fare / distance)
 
-    -- ── TIME FEATURES (extracted by Member A) ───────────────────────
+    -- ── TIME FEATURES (extracted during processing) ───────────────────
     pickup_hour               INTEGER,             -- Hour of pickup (0-23)
     pickup_day_of_week        INTEGER,             -- Day of week (0=Mon, 6=Sun)
     pickup_day_name           TEXT,                -- Day name (Monday-Sunday)

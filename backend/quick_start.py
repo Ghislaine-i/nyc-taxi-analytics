@@ -1,5 +1,5 @@
 """
-QUICK START GUIDE - Member A (Backend)
+QUICK START GUIDE - Backend Setup
 NYC Taxi Trip Analyzer
 
 Follow these steps in order!
@@ -9,7 +9,7 @@ print("""
 ======================================================================
                                                                       
           NYC TAXI TRIP ANALYZER - QUICK START GUIDE                  
-                    Member A - Backend Setup                          
+                      Backend Setup                          
                                                                       
 ======================================================================
 
@@ -81,7 +81,7 @@ def step4_database():
         from sqlalchemy import create_engine
         
         if "password" in Config.DATABASE_URL.lower():
-            return False, "Database URL still has placeholder\n   Update config.py after Member B creates database\n   OR use SQLite fallback (see config.py)"
+            return False, "Database URL still has placeholder\n   Update config.py with your database connection\n   OR use SQLite fallback (see config.py)"
         
         try:
             engine = create_engine(Config.DATABASE_URL)
@@ -90,7 +90,7 @@ def step4_database():
                 result.fetchone()
             return True, "Database connection successful"
         except:
-            return False, "Cannot connect to database\n   Waiting for Member B to create database\n   Backend will run but API queries will fail"
+            return False, "Cannot connect to database\n   Check config.py settings\n   Backend will run but API queries will fail"
             
     except Exception as e:
         return False, f"Configuration error: {e}"
@@ -156,11 +156,7 @@ def main():
    - Export cleaned_taxi_data.csv
    - Generate exclusion log
    
-2. Share with Member B:
-   - Share cleaned_taxi_data.csv
-   - Share exclusion_log.txt
-   
-3. Run this script again:
+2. Run this script again:
    -> python quick_start.py
 """)
     
@@ -168,18 +164,18 @@ def main():
         print("""
 DATABASE NOT CONNECTED (Expected at this stage)
 
-OPTION 1: Wait for Member B to create database
-   1. Member B creates database and imports your cleaned data
-   2. Member B gives you connection string
-   3. Update config.py with connection string
-   4. Run backend: python app.py
-
-OPTION 2: Use SQLite fallback (quick test)
+OPTION 1: Use SQLite (recommended for quick setup)
    1. Edit config.py
    2. Change DATABASE_URL to:
       DATABASE_URL = "sqlite:///taxi_db.sqlite"
-   3. Run backend: python app.py
-   4. Backend will create SQLite database automatically
+   3. Run: python import_to_database.py
+   4. Run backend: python app.py
+
+OPTION 2: Use PostgreSQL
+   1. Create PostgreSQL database
+   2. Run: python import_to_database.py
+   3. Update config.py with connection string
+   4. Run backend: python app.py
 
 BACKEND WILL RUN WITHOUT DATABASE:
    - API will start successfully
@@ -210,7 +206,7 @@ Available endpoints:
 
 Full documentation: README_BACKEND.md
 
-Ready for Member C to connect frontend!
+Ready for frontend integration!
 """)
     
     print("="*70)
@@ -232,24 +228,23 @@ backend/
 """)
     
     print("\n" + "="*70)
-    print("MEMBER A CHECKLIST:")
+    print("BACKEND CHECKLIST:")
     print("="*70)
     print("""
-Day 1:
+Setup:
   [OK] Install dependencies
   [ ? ] Process data
-  [ ? ] Share files with Member B
-  [ - ] Wait for Member B's database connection
+  [ - ] Import to database
   [ - ] Test backend
 
-Day 2:
+Integration:
   [ - ] Connect to database
-  [ - ] Support Member C with API
-  [ - ] Write Section 3 of report
+  [ - ] Test API endpoints
+  [ - ] Connect frontend
 
-Day 3:
+Final:
   [ - ] Final testing
-  [ - ] Help with video
+  [ - ] Documentation
   [ - ] Submit
 """)
     print("="*70 + "\n")

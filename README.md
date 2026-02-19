@@ -16,19 +16,6 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 
 ---
 
-## Team Structure
-
-### Member A — Backend and Data Processing
-Responsibilities: Data cleaning, feature engineering, Flask REST API
-
-### Member B — Database Design and Implementation
-Responsibilities: Schema design, data import, indexing, query optimization
-
-### Member C — Frontend Dashboard and Documentation
-Responsibilities: Web dashboard, visualizations, user interface, technical report
-
----
-
 ## Dataset
 
 **Source**: NYC Taxi and Limousine Commission (TLC)
@@ -46,6 +33,37 @@ Responsibilities: Web dashboard, visualizations, user interface, technical repor
 ## Video Walkthrough
 
 [Link to video walkthrough — add here before submission]
+
+---
+
+## Quick Start (TL;DR)
+
+```bash
+# 1. Clone and setup
+git clone <repository-url>
+cd nyc-taxi-analytics
+
+# 2. Create virtual environment and install dependencies
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+# source .venv/bin/activate  # Mac/Linux
+pip install -r backend/requirements.txt
+
+# 3. Import data to database (SQLite, no setup needed)
+cd backend
+python import_to_database.py   # Select option 2 for SQLite
+
+# 4. Start backend API
+python app.py
+
+# 5. Start frontend (new terminal)
+cd ..
+python -m http.server 8000 --directory frontend
+
+# 6. Open browser
+# Backend: http://localhost:5000/api/health
+# Frontend: http://localhost:8000
+```
 
 ---
 
@@ -69,7 +87,25 @@ cd nyc-taxi-analytics
 
 ---
 
-### Step 2 — Install Backend Dependencies
+### Step 2 — Create Virtual Environment
+
+**Windows:**
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+**Mac/Linux:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+You should see `(.venv)` in your terminal prompt.
+
+---
+
+### Step 3 — Install Backend Dependencies
 
 ```bash
 cd backend
@@ -80,7 +116,7 @@ The `requirements.txt` includes: Flask, Flask-CORS, Pandas, NumPy, SQLAlchemy, P
 
 ---
 
-### Step 3 — Process the Raw Data (Member A)
+### Step 4 — Process the Raw Data (Optional)
 
 Place the raw dataset files in the `data/` folder:
 - `data/yellow_tripdata.csv` (or `.parquet`)
@@ -102,7 +138,7 @@ This will:
 
 ---
 
-### Step 4 — Set Up the Database (Member B)
+### Step 5 — Set Up the Database
 
 The backend is pre-configured to use SQLite (`backend/taxi_db.sqlite`) for zero-configuration setup.
 
@@ -132,7 +168,7 @@ python import_to_database.py
 
 ---
 
-### Step 5 — Start the Backend API
+### Step 6 — Start the Backend API
 
 ```bash
 cd backend
@@ -154,7 +190,7 @@ Expected response:
 
 ---
 
-### Step 6 — Launch the Frontend Dashboard (Member C)
+### Step 7 — Launch the Frontend Dashboard
 
 Open a new terminal from the project root:
 
@@ -197,9 +233,6 @@ nyc-taxi-analytics/
 |
 +-- shared/
 |   +-- cleaned_taxi_data.csv    # Shared clean data copy
-|
-+-- docs/
-|   +-- REPORT.md                # Technical documentation report
 |
 +-- README.md
 ```
@@ -290,7 +323,6 @@ pip install -r backend/requirements.txt
 
 ## Documentation
 
-- Technical Report: `docs/REPORT.md`
 - API Reference: `backend/README_BACKEND.md`
 - Processing Log: `backend/processing_report.txt`
 - Exclusion Log: `backend/exclusion_log.txt`

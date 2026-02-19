@@ -1,5 +1,4 @@
 # NYC Taxi Trip Analyzer - Backend Dependencies
-# Member A - Backend Requirements
 # 
 # Installation command:
 #   pip install -r requirements.txt
@@ -62,14 +61,14 @@ python-dotenv==1.0.0
 # pytest-flask==1.3.0
 
 # ============================================================================
-# NOTES FOR TEAMMATES
+# NOTES
 # ============================================================================
-# Member B (Database):
-#   - If using PostgreSQL, you'll need to install psycopg2 separately
-#   - Or just use SQLite which is built into Python
+# Database:
+#   - If using PostgreSQL, psycopg2 is required
+#   - SQLite is built into Python and works out of the box
 #   - Update DATABASE_URL in config.py accordingly
 #
-# Member C (Frontend):
-#   - Backend will run on http://localhost:5000
+# Frontend:
+#   - Backend runs on http://localhost:5000
 #   - CORS is enabled for frontend requests
 #   - API documentation in README_BACKEND.md

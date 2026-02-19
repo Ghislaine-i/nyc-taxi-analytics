@@ -42,10 +42,10 @@ try:
 except Exception as e:
     print(f"   [WARNING] Database connection failed: {e}")
     print("   [INFO] API will run but database queries will fail")
-    print("   [INFO] Make sure Member B has:")
-    print("       1. Created the database")
-    print("       2. Imported the cleaned data")
-    print("       3. Shared the connection string with you")
+    print("   [INFO] To fix this:")
+    print("       1. Run python import_to_database.py")
+    print("       2. Update config.py with the connection string")
+    print("       3. Restart the server")
     engine = None
     db_connected = False
 

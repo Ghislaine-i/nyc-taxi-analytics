@@ -62,13 +62,13 @@ All thresholds were set based on:
 - Industry best practices
 
 ======================================================================
-NEXT STEPS FOR MEMBER B (Database)
+NEXT STEPS
 ======================================================================
 
 1. Review this exclusion log
-2. Load cleaned_taxi_data.csv into the database
+2. Run import_to_database.py to load data
 3. Verify record counts match this log
-4. Create indexes on datetime and location columns
-5. Run test queries to validate data integrity
+4. Start the backend with python app.py
+5. Test the API at http://localhost:5000/api/health
 
 ======================================================================

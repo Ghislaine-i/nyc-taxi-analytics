@@ -1,5 +1,4 @@
 # NYC Taxi Trip Analyzer - Backend Documentation
-## Member A - Backend & Data Processing
 
 ---
 
@@ -8,8 +7,8 @@
 2. [Setup Instructions](#setup-instructions)
 3. [Data Processing](#data-processing)
 4. [API Documentation](#api-documentation)
-5. [For Member B - Database](#for-member-b---database)
-6. [For Member C - Frontend](#for-member-c---frontend)
+5. [Database Setup](#database-setup)
+6. [Frontend Integration](#frontend-integration)
 7. [Troubleshooting](#troubleshooting)
 
 ---
@@ -58,17 +57,17 @@ This script will:
 - ✓ Generate exclusion log and processing report
 
 **Important Files Generated:**
-- `cleaned_taxi_data.csv` - Clean data for Member B
+- `cleaned_taxi_data.csv` - Cleaned data for import
 - `exclusion_log.txt` - Details on excluded records
 - `processing_report.txt` - Full processing log
 
 ### 3. Configure Database Connection
 
-Update `config.py` with database URL from Member B:
+Update `config.py` with your database URL:
 
 ```python
-# After Member B creates the database, update this:
-DATABASE_URL = "postgresql://username:password@localhost:5432/taxi_db"
+# Default is SQLite:
+DATABASE_URL = "sqlite:///taxi_db.sqlite"
 ```
 
 ### 4. Run Backend Server
@@ -487,40 +486,34 @@ Get overall summary statistics for entire dataset.
 
 ---
 
-## For Member B - Database
+## Database Setup
 
-### What You Need from Member A
+### Required Files
 
-**Files to receive:**
+**Files needed:**
 1. ✅ `cleaned_taxi_data.csv` - Cleaned trip data
 2. ✅ `exclusion_log.txt` - Record exclusion details
 3. ✅ `processing_report.txt` - Processing summary
 
 **These files are in:** `backend/` and `shared/` folders
 
-### Your Tasks
+### Setup Tasks
 
-1. **Create Database**
+1. **Create Database** (PostgreSQL)
    ```bash
    createdb taxi_db
    ```
+   Or use SQLite (default in config.py)
 
-2. **Design Schema**
-   - Create `locations` table (from taxi_zone_lookup.csv)
-   - Create `trips` table (from cleaned_taxi_data.csv)
-   - Add foreign keys, indexes, constraints
-
-3. **Import Data**
-   - Load `cleaned_taxi_data.csv` into `trips` table
-   - Load `taxi_zone_lookup.csv` into `locations` table
-
-4. **Share Connection String**
+2. **Import Data**
+   ```bash
+   python import_to_database.py
    ```
-   postgresql://username:password@localhost:5432/taxi_db
-   ```
-   Give this to Member A to update `config.py`
 
-5. **Create Indexes**
+3. **Update Configuration**
+   Update `config.py` with your connection string
+
+4. **Create Indexes**
    ```sql
    CREATE INDEX idx_pickup_date ON trips(tpep_pickup_datetime);
    CREATE INDEX idx_pickup_location ON trips(PULocationID);
@@ -562,7 +555,7 @@ CREATE TABLE trips (
 );
 ```
 
-### What to Give Back to Member A
+### Database Connection Details
 
 - ✅ Database connection string
 - ✅ Confirmation that data import succeeded
@@ -570,9 +563,9 @@ CREATE TABLE trips (
 
 ---
 
-## For Member C - Frontend
+## Frontend Integration
 
-### What You Need from Member A
+### Backend API URL
 
 **Backend API URL:**
 ```
@@ -652,7 +645,7 @@ Based on available endpoints:
 ```
 
 **Solutions:**
-1. Check if Member B has created the database
+1. Check if database has been set up
 2. Verify DATABASE_URL in `config.py` is correct
 3. Test PostgreSQL connection:
    ```bash
@@ -725,7 +718,7 @@ CORS is already enabled in `app.py`. If still having issues:
 API returns empty arrays
 
 **Solutions:**
-1. Check if Member B imported data into database
+1. Check if data was imported into database
 2. Test database directly:
    ```sql
    SELECT COUNT(*) FROM trips;
@@ -753,31 +746,27 @@ backend/
 
 ## Testing Checklist
 
-### Member A (You)
+### Backend
 - [ ] Data processing runs without errors
 - [ ] Cleaned data exported successfully
 - [ ] Exclusion log created
 - [ ] Backend server starts successfully
 - [ ] All API endpoints respond correctly
-- [ ] Database connection works (after Member B setup)
+- [ ] Database connection works
 
-### Integration with Member B
-- [ ] Shared cleaned_taxi_data.csv
-- [ ] Received database connection string
-- [ ] Updated config.py with database URL
+### Integration
+- [ ] Database has cleaned data imported
+- [ ] config.py has correct database URL
 - [ ] API can query database successfully
-
-### Integration with Member C
-- [ ] Confirmed API URL with Member C
-- [ ] Member C can access /api/health
-- [ ] Member C can fetch data from endpoints
+- [ ] Frontend can access /api/health
+- [ ] Frontend can fetch data from endpoints
 - [ ] No CORS errors
 
 ---
 
 ## Contact & Support
 
-**Member A Responsibilities:**
+**Responsibilities:**
 - ✅ Data processing and cleaning
 - ✅ Feature engineering
 - ✅ API development and maintenance
@@ -786,7 +775,6 @@ backend/
 **Questions?**
 - Data issues? → Check `processing_report.txt`
 - API issues? → Check `backend.log`
-- Need help? → Contact Member A!
 
 ---
 

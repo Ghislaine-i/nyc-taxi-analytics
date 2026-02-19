@@ -1,6 +1,5 @@
 """
 Database Import Script - NYC Taxi Trip Analyzer
-Member B - Use this script to import cleaned data into your database
 
 This script imports:
 1. Locations data from taxi_zone_lookup.csv
@@ -15,13 +14,12 @@ import sys
 import os
 
 # ===================================================================
-# CONFIGURATION - MEMBER B: UPDATE THIS SECTION!
+# CONFIGURATION
 # ===================================================================
 
 print("""
 ╔══════════════════════════════════════════════════════════════════╗
 ║     NYC TAXI TRIP ANALYZER - DATABASE IMPORT SCRIPT              ║
-║     Member B - Database Setup                                    ║
 ╚══════════════════════════════════════════════════════════════════╝
 """)
 
@@ -90,7 +88,7 @@ else:
 if not os.path.exists(TRIPS_FILE):
     print(f"❌ ERROR: Trips file not found: {TRIPS_FILE}")
     print("   Make sure cleaned_taxi_data.csv is in the /shared/ folder")
-    print("   Member A should have created this file")
+    print("   Run data_processing.py first to generate this file")
     sys.exit(1)
 else:
     file_size_mb = os.path.getsize(TRIPS_FILE) / (1024 * 1024)
@@ -298,29 +296,27 @@ print("\n" + "="*70)
 print("✓ IMPORT COMPLETE!")
 print("="*70)
 
-print("\n📋 NEXT STEPS FOR MEMBER B:\n")
-print("1. Copy your database connection string:")
+print("\n📋 NEXT STEPS:\n")
+print("1. Your database connection string:")
 print(f"   {DATABASE_URL}")
-print("\n2. Give this connection string to Member A")
-print("   • They need to update backend/config.py line 34")
+print("\n2. Update backend/config.py with this connection string")
 print("   • Or create a .env file with DATABASE_URL")
 
-print("\n3. Send Member A a confirmation message:")
 print(f"""
-   ✓ Database Type: {'PostgreSQL' if 'postgresql' in DATABASE_URL else 'SQLite'}
-   ✓ Total Locations: {location_count if 'location_count' in locals() else 'N/A'}
-   ✓ Total Trips: {trip_count if 'trip_count' in locals() else 'N/A'}
-   ✓ All data imported successfully
-   ✓ Indexes created
-   ✓ Connection String: {DATABASE_URL}
+\n✓ Import Summary:
+   Database Type: {'PostgreSQL' if 'postgresql' in DATABASE_URL else 'SQLite'}
+   Total Locations: {location_count if 'location_count' in locals() else 'N/A'}
+   Total Trips: {trip_count if 'trip_count' in locals() else 'N/A'}
+   All data imported successfully
+   Indexes created
+   Connection String: {DATABASE_URL}
    
    Ready for backend integration!
 """)
 
-print("\n4. Member A will then:")
-print("   • Update config.py with your connection string")
-print("   • Test the backend API")
-print("   • Confirm connection works")
+print("\n3. Start the backend API:")
+print("   python app.py")
+print("   • Test at http://localhost:5000/api/health")
 
 print("\n" + "="*70)
 print("🎉 Great job! Database setup is complete!")

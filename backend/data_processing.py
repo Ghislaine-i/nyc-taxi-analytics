@@ -1,15 +1,12 @@
 ﻿"""
 NYC Taxi Trip Analyzer - Data Processing Pipeline
-Member A - Data Cleaning, Feature Engineering, and Export
 
 This script handles:
 1. Loading raw taxi trip data (CSV/Parquet)
 2. Data quality checks and cleaning
 3. Feature engineering (derived metrics)
 4. Integration with taxi zone lookup data
-5. Export cleaned data for Member B (Database)
-
-Run this script first to prepare data for the team!
+5. Export cleaned data for database import
 
 Usage:
     python data_processing.py
@@ -429,7 +426,7 @@ def sample_data(df, sample_size=None):
     return sampled_df
 
 def export_cleaned_data(df, filepath):
-    """Export cleaned data to CSV for Member B"""
+    """Export cleaned data to CSV for database import"""
     logger.log("\n" + "="*70)
     logger.log("STEP 6: EXPORTING CLEANED DATA")
     logger.log("="*70)
@@ -445,7 +442,7 @@ def export_cleaned_data(df, filepath):
     logger.log(f"  [OK] Export complete!")
     logger.log(f"  File size: {file_size:.2f} MB")
     
-    # Also save a copy to shared folder for Member B
+    # Also save a copy to shared folder
     shared_path = os.path.join('../shared', os.path.basename(filepath))
     os.makedirs('../shared', exist_ok=True)
     df.to_csv(shared_path, index=False)
@@ -528,14 +525,14 @@ All thresholds were set based on:
 - Industry best practices
 
 {'='*70}
-NEXT STEPS FOR MEMBER B (Database)
+NEXT STEPS
 {'='*70}
 
 1. Review this exclusion log
-2. Load cleaned_taxi_data.csv into the database
+2. Run import_to_database.py to load data
 3. Verify record counts match this log
-4. Create indexes on datetime and location columns
-5. Run test queries to validate data integrity
+4. Start the backend with python app.py
+5. Test the API at http://localhost:5000/api/health
 
 {'='*70}
 """
@@ -564,7 +561,6 @@ def main():
     
     print("\n" + "="*70)
     print("NYC TAXI TRIP ANALYZER - DATA PROCESSING PIPELINE")
-    print("Member A - Backend Data Processing")
     print("="*70 + "\n")
     
     logger.log("Starting data processing pipeline...")
@@ -622,14 +618,13 @@ def main():
         print("[OK] DATA PROCESSING COMPLETE!")
         print("="*70)
         print("\nGenerated Files:")
-        print(f"  1. {output_file} - Cleaned data for Member B")
+        print(f"  1. {output_file} - Cleaned data")
         print(f"  2. {Config.EXCLUSION_LOG_FILE} - Exclusion log")
         print(f"  3. {Config.PROCESSING_REPORT_FILE} - Processing report")
         print(f"  4. ../shared/cleaned_taxi_data.csv - Shared copy")
         print("\nNext Steps:")
-        print("  → Share these files with Member B (Database)")
-        print("  → Member B should import cleaned_taxi_data.csv to database")
-        print("  → Update DATABASE_URL in config.py after Member B sets up DB")
+        print("  → Run python import_to_database.py to load into database")
+        print("  → Run python app.py to start the API")
         print("="*70 + "\n")
         
     except Exception as e:

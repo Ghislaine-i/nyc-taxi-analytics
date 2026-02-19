@@ -1,9 +1,7 @@
 """
 NYC Taxi Trip Analyzer - Configuration File
-Member A - Backend Configuration
 
 This file contains all configuration settings for the backend service.
-Update DATABASE_URL after Member B creates and shares the database.
 """
 
 import os
@@ -21,8 +19,6 @@ class Config:
     # ========================================================================
     # DATABASE CONFIGURATION
     # ========================================================================
-    # 🔴 IMPORTANT FOR MEMBER B: Update this after database setup!
-    # 
     # PostgreSQL format: postgresql://username:password@host:port/database
     # SQLite format: sqlite:///path/to/database.db
     # 
@@ -34,8 +30,8 @@ class Config:
     # SQLite for local development (works without PostgreSQL installation)
     DATABASE_URL = "sqlite:///taxi_db.sqlite"
     
-    # PostgreSQL (uncomment below and comment SQLite above when on same network as Member B):
-    # DATABASE_URL = "postgresql://postgres:Chris12@192.168.0.201:5432/taxi_db"
+    # PostgreSQL (uncomment below and comment SQLite above for PostgreSQL):
+    # DATABASE_URL = "postgresql://postgres:password@localhost:5432/taxi_db"
     
     # ========================================================================
     # API CONFIGURATION

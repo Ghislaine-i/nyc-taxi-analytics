@@ -1,6 +1,6 @@
 /**
  * NYC Taxi Trip Explorer — Dashboard JavaScript
- * Member C | Frontend logic: API calls, Chart.js charts, filters, table
+ * Frontend logic: API calls, Chart.js charts, filters, table
  * Backend API: http://localhost:5000/api
  */
 
