@@ -32,7 +32,7 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 
 ## Video Walkthrough
 
-[Link to video walkthrough — add here before submission]
+[Link to video walkthrough ]
 
 ---
 
