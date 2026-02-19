@@ -1,0 +1,560 @@
+{
+  "query_1": {
+    "title": "Top 10 Busiest Pickup Zones",
+    "columns": [
+      "pickup_borough",
+      "pickup_zone",
+      "trip_count",
+      "avg_fare",
+      "avg_distance_miles",
+      "avg_tip"
+    ],
+    "data": [
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Upper East Side North",
+        "trip_count": 2182,
+        "avg_fare": 9.39,
+        "avg_distance_miles": 1.83,
+        "avg_tip": 1.43
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Upper East Side South",
+        "trip_count": 2173,
+        "avg_fare": 8.83,
+        "avg_distance_miles": 1.64,
+        "avg_tip": 1.35
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Midtown Center",
+        "trip_count": 2076,
+        "avg_fare": 10.84,
+        "avg_distance_miles": 2.22,
+        "avg_tip": 1.75
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Midtown East",
+        "trip_count": 1863,
+        "avg_fare": 11.19,
+        "avg_distance_miles": 2.39,
+        "avg_tip": 1.84
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Times Sq/Theatre District",
+        "trip_count": 1776,
+        "avg_fare": 11.51,
+        "avg_distance_miles": 2.46,
+        "avg_tip": 1.74
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Penn Station/Madison Sq West",
+        "trip_count": 1761,
+        "avg_fare": 11.58,
+        "avg_distance_miles": 2.26,
+        "avg_tip": 1.61
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Murray Hill",
+        "trip_count": 1566,
+        "avg_fare": 10.43,
+        "avg_distance_miles": 2.11,
+        "avg_tip": 1.65
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Clinton East",
+        "trip_count": 1554,
+        "avg_fare": 10.75,
+        "avg_distance_miles": 2.36,
+        "avg_tip": 1.46
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Union Sq",
+        "trip_count": 1493,
+        "avg_fare": 10.39,
+        "avg_distance_miles": 2.09,
+        "avg_tip": 1.77
+      },
+      {
+        "pickup_borough": "Manhattan",
+        "pickup_zone": "Lincoln Square East",
+        "trip_count": 1479,
+        "avg_fare": 9.64,
+        "avg_distance_miles": 1.99,
+        "avg_tip": 1.48
+      }
+    ]
+  },
+  "query_2": {
+    "title": "Average Metrics by Borough",
+    "columns": [
+      "pickup_borough",
+      "total_trips",
+      "avg_fare",
+      "avg_distance",
+      "avg_duration_min",
+      "avg_speed",
+      "avg_tip",
+      "total_revenue"
+    ],
+    "data": [
+      {
+        "pickup_borough": "Manhattan",
+        "total_trips": 45406,
+        "avg_fare": 10.55,
+        "avg_distance": 2.23,
+        "avg_duration_min": 11.82,
+        "avg_speed": 10.88,
+        "avg_tip": 1.59,
+        "total_revenue": 608989.85
+      },
+      {
+        "pickup_borough": "Queens",
+        "total_trips": 2978,
+        "avg_fare": 35.45,
+        "avg_distance": 11.61,
+        "avg_duration_min": 29.15,
+        "avg_speed": 24.1,
+        "avg_tip": 5.32,
+        "total_revenue": 133730.59
+      },
+      {
+        "pickup_borough": "Unknown",
+        "total_trips": 939,
+        "avg_fare": 11.84,
+        "avg_distance": 2.64,
+        "avg_duration_min": 12.57,
+        "avg_speed": 11.29,
+        "avg_tip": 1.92,
+        "total_revenue": 14224.04
+      },
+      {
+        "pickup_borough": "Brooklyn",
+        "total_trips": 548,
+        "avg_fare": 17.96,
+        "avg_distance": 4.88,
+        "avg_duration_min": 18.67,
+        "avg_speed": 14.57,
+        "avg_tip": 1.4,
+        "total_revenue": 11345.32
+      },
+      {
+        "pickup_borough": "Bronx",
+        "total_trips": 113,
+        "avg_fare": 21.76,
+        "avg_distance": 6.32,
+        "avg_duration_min": 22.12,
+        "avg_speed": 15.77,
+        "avg_tip": 0.15,
+        "total_revenue": 2730.13
+      },
+      {
+        "pickup_borough": "Staten Island",
+        "total_trips": 3,
+        "avg_fare": 12.67,
+        "avg_distance": 3.48,
+        "avg_duration_min": 12.26,
+        "avg_speed": 16.15,
+        "avg_tip": 0.0,
+        "total_revenue": 43.4
+      }
+    ]
+  },
+  "query_3": {
+    "title": "Hourly Trip Volume Pattern (24-hour profile)",
+    "columns": [
+      "pickup_hour",
+      "trip_count",
+      "avg_fare",
+      "avg_distance",
+      "avg_duration",
+      "hour_revenue"
+    ],
+    "data": [
+      {
+        "pickup_hour": 0,
+        "trip_count": 1346,
+        "avg_fare": 12.97,
+        "avg_distance": 3.4,
+        "avg_duration": 12.22,
+        "hour_revenue": 22144.57
+      },
+      {
+        "pickup_hour": 1,
+        "trip_count": 929,
+        "avg_fare": 12.45,
+        "avg_distance": 3.26,
+        "avg_duration": 11.68,
+        "hour_revenue": 14566.7
+      },
+      {
+        "pickup_hour": 2,
+        "trip_count": 688,
+        "avg_fare": 12.16,
+        "avg_distance": 3.2,
+        "avg_duration": 11.43,
+        "hour_revenue": 10468.82
+      },
+      {
+        "pickup_hour": 3,
+        "trip_count": 518,
+        "avg_fare": 12.49,
+        "avg_distance": 3.29,
+        "avg_duration": 10.66,
+        "hour_revenue": 8123.09
+      },
+      {
+        "pickup_hour": 4,
+        "trip_count": 403,
+        "avg_fare": 15.21,
+        "avg_distance": 4.34,
+        "avg_duration": 12.08,
+        "hour_revenue": 7639.56
+      },
+      {
+        "pickup_hour": 5,
+        "trip_count": 461,
+        "avg_fare": 14.98,
+        "avg_distance": 4.42,
+        "avg_duration": 11.49,
+        "hour_revenue": 8662.58
+      },
+      {
+        "pickup_hour": 6,
+        "trip_count": 1166,
+        "avg_fare": 11.75,
+        "avg_distance": 3.11,
+        "avg_duration": 10.37,
+        "hour_revenue": 17035.57
+      },
+      {
+        "pickup_hour": 7,
+        "trip_count": 1993,
+        "avg_fare": 11.82,
+        "avg_distance": 2.83,
+        "avg_duration": 12.35,
+        "hour_revenue": 29160.59
+      },
+      {
+        "pickup_hour": 8,
+        "trip_count": 2494,
+        "avg_fare": 11.86,
+        "avg_distance": 2.51,
+        "avg_duration": 13.73,
+        "hour_revenue": 36524.7
+      },
+      {
+        "pickup_hour": 9,
+        "trip_count": 2428,
+        "avg_fare": 11.84,
+        "avg_distance": 2.48,
+        "avg_duration": 13.63,
+        "hour_revenue": 35721.95
+      },
+      {
+        "pickup_hour": 10,
+        "trip_count": 2348,
+        "avg_fare": 11.98,
+        "avg_distance": 2.52,
+        "avg_duration": 13.49,
+        "hour_revenue": 34688.33
+      },
+      {
+        "pickup_hour": 11,
+        "trip_count": 2434,
+        "avg_fare": 11.68,
+        "avg_distance": 2.44,
+        "avg_duration": 13.17,
+        "hour_revenue": 34941.1
+      },
+      {
+        "pickup_hour": 12,
+        "trip_count": 2601,
+        "avg_fare": 11.88,
+        "avg_distance": 2.6,
+        "avg_duration": 13.07,
+        "hour_revenue": 38411.66
+      },
+      {
+        "pickup_hour": 13,
+        "trip_count": 2574,
+        "avg_fare": 12.87,
+        "avg_distance": 2.98,
+        "avg_duration": 13.88,
+        "hour_revenue": 41172.4
+      },
+      {
+        "pickup_hour": 14,
+        "trip_count": 2743,
+        "avg_fare": 12.31,
+        "avg_distance": 2.76,
+        "avg_duration": 13.66,
+        "hour_revenue": 41597.0
+      },
+      {
+        "pickup_hour": 15,
+        "trip_count": 2946,
+        "avg_fare": 12.01,
+        "avg_distance": 2.67,
+        "avg_duration": 13.71,
+        "hour_revenue": 43818.68
+      },
+      {
+        "pickup_hour": 16,
+        "trip_count": 2655,
+        "avg_fare": 12.67,
+        "avg_distance": 2.92,
+        "avg_duration": 14.25,
+        "hour_revenue": 44112.32
+      },
+      {
+        "pickup_hour": 17,
+        "trip_count": 3060,
+        "avg_fare": 11.87,
+        "avg_distance": 2.62,
+        "avg_duration": 13.77,
+        "hour_revenue": 47568.39
+      },
+      {
+        "pickup_hour": 18,
+        "trip_count": 3358,
+        "avg_fare": 11.77,
+        "avg_distance": 2.61,
+        "avg_duration": 13.34,
+        "hour_revenue": 52048.99
+      },
+      {
+        "pickup_hour": 19,
+        "trip_count": 3166,
+        "avg_fare": 11.37,
+        "avg_distance": 2.61,
+        "avg_duration": 12.13,
+        "hour_revenue": 47591.09
+      },
+      {
+        "pickup_hour": 20,
+        "trip_count": 2789,
+        "avg_fare": 12.11,
+        "avg_distance": 2.97,
+        "avg_duration": 12.06,
+        "hour_revenue": 43789.12
+      },
+      {
+        "pickup_hour": 21,
+        "trip_count": 2661,
+        "avg_fare": 12.68,
+        "avg_distance": 3.21,
+        "avg_duration": 12.45,
+        "hour_revenue": 43498.09
+      },
+      {
+        "pickup_hour": 22,
+        "trip_count": 2430,
+        "avg_fare": 12.33,
+        "avg_distance": 3.09,
+        "avg_duration": 12.19,
+        "hour_revenue": 38447.98
+      },
+      {
+        "pickup_hour": 23,
+        "trip_count": 1809,
+        "avg_fare": 12.77,
+        "avg_distance": 3.28,
+        "avg_duration": 12.3,
+        "hour_revenue": 29492.56
+      }
+    ]
+  },
+  "query_4": {
+    "title": "Day-of-Week Trip Pattern",
+    "columns": [
+      "pickup_day_of_week",
+      "pickup_day_name",
+      "trip_count",
+      "avg_fare",
+      "avg_distance",
+      "avg_duration",
+      "avg_tip"
+    ],
+    "data": [
+      {
+        "pickup_day_of_week": 0,
+        "pickup_day_name": "Monday",
+        "trip_count": 5908,
+        "avg_fare": 12.15,
+        "avg_distance": 2.89,
+        "avg_duration": 12.4,
+        "avg_tip": 1.82
+      },
+      {
+        "pickup_day_of_week": 1,
+        "pickup_day_name": "Tuesday",
+        "trip_count": 7763,
+        "avg_fare": 12.19,
+        "avg_distance": 2.83,
+        "avg_duration": 13.06,
+        "avg_tip": 1.84
+      },
+      {
+        "pickup_day_of_week": 2,
+        "pickup_day_name": "Wednesday",
+        "trip_count": 8303,
+        "avg_fare": 12.36,
+        "avg_distance": 2.84,
+        "avg_duration": 13.39,
+        "avg_tip": 1.87
+      },
+      {
+        "pickup_day_of_week": 3,
+        "pickup_day_name": "Thursday",
+        "trip_count": 8997,
+        "avg_fare": 12.49,
+        "avg_distance": 2.85,
+        "avg_duration": 13.88,
+        "avg_tip": 1.9
+      },
+      {
+        "pickup_day_of_week": 4,
+        "pickup_day_name": "Friday",
+        "trip_count": 6886,
+        "avg_fare": 12.32,
+        "avg_distance": 2.83,
+        "avg_duration": 13.41,
+        "avg_tip": 1.86
+      },
+      {
+        "pickup_day_of_week": 5,
+        "pickup_day_name": "Saturday",
+        "trip_count": 6594,
+        "avg_fare": 11.52,
+        "avg_distance": 2.64,
+        "avg_duration": 12.24,
+        "avg_tip": 1.63
+      },
+      {
+        "pickup_day_of_week": 6,
+        "pickup_day_name": "Sunday",
+        "trip_count": 5549,
+        "avg_fare": 11.9,
+        "avg_distance": 2.96,
+        "avg_duration": 11.59,
+        "avg_tip": 1.72
+      }
+    ]
+  },
+  "query_5": {
+    "title": "Fare Distribution Buckets",
+    "columns": [
+      "fare_bucket",
+      "trip_count",
+      "avg_distance",
+      "avg_tip",
+      "bucket_revenue"
+    ],
+    "data": [
+      {
+        "fare_bucket": "$0 - $4.99",
+        "trip_count": 4763,
+        "avg_distance": 0.52,
+        "avg_tip": 0.68,
+        "bucket_revenue": 28192.91
+      },
+      {
+        "fare_bucket": "$5 - $9.99",
+        "trip_count": 23930,
+        "avg_distance": 1.19,
+        "avg_tip": 1.13,
+        "bucket_revenue": 222671.82
+      },
+      {
+        "fare_bucket": "$10 - $14.99",
+        "trip_count": 10674,
+        "avg_distance": 2.37,
+        "avg_tip": 1.78,
+        "bucket_revenue": 157305.78
+      },
+      {
+        "fare_bucket": "$15 - $19.99",
+        "trip_count": 4111,
+        "avg_distance": 3.93,
+        "avg_tip": 2.37,
+        "bucket_revenue": 84238.61
+      },
+      {
+        "fare_bucket": "$20 - $29.99",
+        "trip_count": 3248,
+        "avg_distance": 6.73,
+        "avg_tip": 3.43,
+        "bucket_revenue": 96143.21
+      },
+      {
+        "fare_bucket": "$30 - $49.99",
+        "trip_count": 1882,
+        "avg_distance": 11.58,
+        "avg_tip": 5.15,
+        "bucket_revenue": 85618.01
+      },
+      {
+        "fare_bucket": "$50+",
+        "trip_count": 1392,
+        "avg_distance": 18.37,
+        "avg_tip": 7.94,
+        "bucket_revenue": 97055.5
+      }
+    ]
+  },
+  "query_6": {
+    "title": "Peak Revenue Hours (Top 5)",
+    "columns": [
+      "pickup_hour",
+      "trip_count",
+      "total_revenue",
+      "avg_revenue_per_trip",
+      "total_tips"
+    ],
+    "data": [
+      {
+        "pickup_hour": 18,
+        "trip_count": 3358,
+        "total_revenue": 52048.99,
+        "avg_revenue_per_trip": 15.5,
+        "total_tips": 6232.73
+      },
+      {
+        "pickup_hour": 19,
+        "trip_count": 3166,
+        "total_revenue": 47591.09,
+        "avg_revenue_per_trip": 15.03,
+        "total_tips": 5804.03
+      },
+      {
+        "pickup_hour": 17,
+        "trip_count": 3060,
+        "total_revenue": 47568.39,
+        "avg_revenue_per_trip": 15.55,
+        "total_tips": 5550.04
+      },
+      {
+        "pickup_hour": 16,
+        "trip_count": 2655,
+        "total_revenue": 44112.32,
+        "avg_revenue_per_trip": 16.61,
+        "total_tips": 5173.07
+      },
+      {
+        "pickup_hour": 15,
+        "trip_count": 2946,
+        "total_revenue": 43818.68,
+        "avg_revenue_per_trip": 14.87,
+        "total_tips": 4967.28
+      }
+    ]
+  }
+}

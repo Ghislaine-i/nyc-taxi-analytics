@@ -13,11 +13,8 @@ flask-cors==4.0.0
 # ============================================================================
 # DATABASE
 # ============================================================================
-# PostgreSQL adapter (for production) - OPTIONAL
-# NOTE: If psycopg2-binary fails to install on Windows, you can:
-# 1. Skip it and use SQLite instead (built into Python)
-# 2. Or install from a precompiled wheel
-# psycopg2-binary==2.9.9
+# PostgreSQL adapter (required)
+psycopg2-binary==2.9.9
 
 # SQLAlchemy for database operations
 SQLAlchemy==2.0.23

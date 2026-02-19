@@ -259,14 +259,14 @@ def hourly_pattern():
     
     query = """
     SELECT 
-        EXTRACT(HOUR FROM tpep_pickup_datetime) as hour,
+        pickup_hour as hour,
         COUNT(*) as trip_count,
         AVG(trip_distance) as avg_distance,
         AVG(avg_speed_mph) as avg_speed,
         AVG(fare_amount) as avg_fare,
         AVG(trip_duration_minutes) as avg_duration
     FROM trips
-    GROUP BY EXTRACT(HOUR FROM tpep_pickup_datetime)
+    GROUP BY pickup_hour
     ORDER BY hour
     """
     
@@ -295,14 +295,14 @@ def day_of_week_pattern():
     
     query = """
     SELECT 
-        TO_CHAR(tpep_pickup_datetime, 'Day') as day_name,
-        EXTRACT(DOW FROM tpep_pickup_datetime) as day_number,
+        pickup_day_name as day_name,
+        pickup_day_of_week as day_number,
         COUNT(*) as trip_count,
         AVG(fare_amount) as avg_fare,
         AVG(trip_distance) as avg_distance,
         AVG(avg_speed_mph) as avg_speed
     FROM trips
-    GROUP BY day_name, day_number
+    GROUP BY pickup_day_name, pickup_day_of_week
     ORDER BY day_number
     """
     
