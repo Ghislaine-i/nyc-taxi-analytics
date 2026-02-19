@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NYC Taxi Trip Explorer | Urban Mobility Dashboard</title>
+  <meta name="description"
+    content="Explore New York City taxi trip patterns, fare distributions, borough analytics, and urban mobility insights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-text">
+          <h1>NYC Taxi Trip Explorer</h1>
+          <p>Urban Mobility Analytics — NYC TLC Dataset</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="connectionLabel">Connecting to API...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTERS -->
+  <section class="filters-section">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label for="filterBorough">Borough</label>
+          <select id="filterBorough">
+            <option value="">All Boroughs</option>
+            <option value="Manhattan">Manhattan</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="Queens">Queens</option>
+            <option value="Bronx">Bronx</option>
+            <option value="Staten Island">Staten Island</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filterMinFare">Min Fare ($)</label>
+          <input type="number" id="filterMinFare" placeholder="e.g. 5" min="0" />
+        </div>
+        <div class="filter-group">
+          <label for="filterMaxFare">Max Fare ($)</label>
+          <input type="number" id="filterMaxFare" placeholder="e.g. 100" min="0" />
+        </div>
+        <div class="filter-group">
+          <label for="filterDate">Date</label>
+          <input type="date" id="filterDate" />
+        </div>
+        <button class="btn-apply" onclick="applyFilters()">Apply Filters</button>
+        <button class="btn-reset" onclick="resetFilters()">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- KPI CARDS -->
+      <section class="kpi-section">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Trips</span>
+            <span class="kpi-value" id="valTotalTrips"><span class="shimmer"></span></span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Revenue</span>
+            <span class="kpi-value" id="valRevenue"><span class="shimmer"></span></span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Average Fare</span>
+            <span class="kpi-value" id="valAvgFare"><span class="shimmer"></span></span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Average Distance</span>
+            <span class="kpi-value" id="valAvgDist"><span class="shimmer"></span></span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Average Speed</span>
+            <span class="kpi-value" id="valAvgSpeed"><span class="shimmer"></span></span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Average Duration</span>
+            <span class="kpi-value" id="valAvgDuration"><span class="shimmer"></span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHARTS -->
+      <section class="charts-section">
+
+        <!-- Row 1: Hourly + Borough -->
+        <div class="charts-row">
+          <div class="chart-card chart-wide">
+            <div class="chart-header">
+              <h2>Trip Volume by Hour of Day</h2>
+              <p class="chart-sub">Shows rush-hour peaks alongside average travel speed throughout the day</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartHourly"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Trips by Borough</h2>
+              <p class="chart-sub">Pickup distribution across NYC boroughs</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartBorough"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Distributions + Day of Week -->
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Fare Distribution</h2>
+              <p class="chart-sub">How much do most trips cost?</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartFareDist"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Distance Distribution</h2>
+              <p class="chart-sub">Short hops vs. longer cross-borough rides</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartDistDist"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Trips by Day of Week</h2>
+              <p class="chart-sub">Weekday commuters vs. weekend travellers</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartDayOfWeek"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Top Locations -->
+        <div class="charts-row">
+          <div class="chart-card chart-full">
+            <div class="chart-header">
+              <div class="chart-header-split">
+                <div>
+                  <h2>Top 10 Pickup / Dropoff Locations</h2>
+                  <p class="chart-sub">Busiest taxi zones in New York City</p>
+                </div>
+                <div class="toggle-group">
+                  <button class="toggle-btn active" id="btnPickup" onclick="switchLocation('pickup')">Pickups</button>
+                  <button class="toggle-btn" id="btnDropoff" onclick="switchLocation('dropoff')">Dropoffs</button>
+                </div>
+              </div>
+            </div>
+            <div class="chart-body chart-body-tall">
+              <canvas id="chartTopLocations"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Borough Comparison -->
+        <div class="charts-row">
+          <div class="chart-card chart-full">
+            <div class="chart-header">
+              <h2>Borough Comparison — Average Fare, Distance and Speed</h2>
+              <p class="chart-sub">Derived from the three engineered features: fare_per_mile, avg_speed_mph,
+                trip_duration_minutes</p>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartBoroughCompare"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- DATA TABLE -->
+      <section class="table-section">
+        <div class="table-card">
+          <div class="table-header">
+            <div>
+              <h2>Trip Records</h2>
+              <p class="chart-sub">Live records from the database — use filters above to refine</p>
+            </div>
+            <div class="table-controls">
+              <label for="tableLimit">Show</label>
+              <select id="tableLimit" onchange="loadTripsTable()">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+              <span>entries</span>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="tripsTable">
+              <thead>
+                <tr>
+                  <th>Pickup Time</th>
+                  <th>Dropoff Time</th>
+                  <th>Pickup Zone</th>
+                  <th>Dropoff Zone</th>
+                  <th>Borough</th>
+                  <th>Distance (mi)</th>
+                  <th>Duration (min)</th>
+                  <th>Fare ($)</th>
+                  <th>Tip ($)</th>
+                  <th>Total ($)</th>
+                  <th>Speed (mph)</th>
+                  <th>Passengers</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr>
+                  <td colspan="12" class="table-placeholder">Loading records...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer" id="tableFooter">Loading...</div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>NYC Taxi Analytics &mdash; Data sourced from the NYC Taxi &amp; Limousine Commission (TLC) &mdash; Member C,
+        Frontend</p>
+    </div>
+  </footer>
+
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

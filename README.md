@@ -3,7 +3,7 @@
 
 ---
 
-## 🚕 Project Overview
+## Project Overview
 
 This is a comprehensive fullstack application for analyzing NYC taxi trip data. The system processes over 50,000 taxi trip records, stores them in a relational database, and provides an interactive dashboard for exploring urban mobility patterns.
 
@@ -16,497 +16,293 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 
 ---
 
-## 👥 Team Structure
+## Team Structure
 
-### Member A - Backend & Data Processing ✅
-**Responsibilities:**
-- Data cleaning and preprocessing
-- Feature engineering (3 derived metrics)
-- Flask REST API development
-- Backend documentation
+### Member A — Backend and Data Processing
+Responsibilities: Data cleaning, feature engineering, Flask REST API
 
-**Status**: COMPLETE
-**Files Ready**: See `backend/` folder
+### Member B — Database Design and Implementation
+Responsibilities: Schema design, data import, indexing, query optimization
 
-### Member B - Database Design & Implementation ⏳
-**Responsibilities:**
-- Database schema design
-- Data import and indexing
-- Query optimization
-- Data integrity validation
-
-**Status**: WAITING FOR MEMBER B
-**Needs**: `cleaned_taxi_data.csv` from Member A
-
-### Member C - Frontend Dashboard ⏳
-**Responsibilities:**
-- Web dashboard development
-- Data visualizations
-- User interface design
-- Frontend documentation
-
-**Status**: WAITING FOR API CONNECTION
-**Needs**: Backend running + database connected
+### Member C — Frontend Dashboard and Documentation
+Responsibilities: Web dashboard, visualizations, user interface, technical report
 
 ---
 
-## 📊 Dataset
+## Dataset
 
-**Source**: NYC Taxi & Limousine Commission (TLC)
+**Source**: NYC Taxi and Limousine Commission (TLC)
 
-### Files Used:
-1. **yellow_tripdata** (Fact Table)
-   - Raw trip-level records
-   - Timestamps, distances, fares, locations
-   
-2. **taxi_zone_lookup** (Dimension Table)
-   - Borough and zone mappings
-   - PULocationID → Borough, Zone names
-   
-3. **taxi_zones** (Spatial Metadata)
-   - GeoJSON boundaries for taxi zones
+| File | Type | Description |
+|---|---|---|
+| `yellow_tripdata.csv` | Fact Table | 7,667,792 raw trip records |
+| `taxi_zone_lookup.csv` | Dimension Table | 265 borough and zone mappings |
+| `taxi_zones.geojson` | Spatial Metadata | GeoJSON boundaries for taxi zones |
 
-### Data Volume:
-- Original: ~687MB raw data
-- Processed: 50,000 cleaned records
-- Features: 20+ columns including 3 derived metrics
+**Processed**: 50,000 cleaned records, 29 columns, including 3 derived features.
 
 ---
 
-## 🏗️ Architecture
+## Video Walkthrough
 
-```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│   Raw Data  │─────▶│   Backend   │─────▶│  Database   │
-│  (CSV/PKT)  │      │  (Flask)    │      │(PostgreSQL) │
-└─────────────┘      └──────┬──────┘      └─────────────┘
-                            │
-                            │ REST API
-                            │
-                     ┌──────▼──────┐
-                     │  Frontend   │
-                     │    (HTML    │
-                     │  JS/Charts) │
-                     └─────────────┘
-```
-
-### Technology Stack:
-- **Backend**: Python 3.9+, Flask, Pandas, NumPy
-- **Database**: PostgreSQL (or SQLite fallback)
-- **Frontend**: HTML5, CSS3, JavaScript, Chart.js
-- **Data**: Parquet/CSV processing with PyArrow
+[Link to video walkthrough — add here before submission]
 
 ---
 
-## 🚀 Quick Start
+## Setup Instructions
 
 ### Prerequisites
+
 - Python 3.9 or higher
-- PostgreSQL (optional - can use SQLite)
-- Modern web browser
+- pip (Python package manager)
+- A modern web browser (Chrome, Firefox, Edge)
+- (Optional) PostgreSQL if switching from the SQLite default
 
-### Installation
+---
 
-#### 1. Clone the Repository
+### Step 1 — Clone the Repository
+
 ```bash
 git clone <repository-url>
-cd nyc-taxi-trip-analyzer
+cd nyc-taxi-analytics
 ```
 
-#### 2. Set Up Backend (Member A)
+---
+
+### Step 2 — Install Backend Dependencies
+
 ```bash
 cd backend
 pip install -r requirements.txt
-python data_processing.py      # Process raw data
-python app.py                 # Start API server
 ```
 
-**Backend will run at**: `http://localhost:5000`
+The `requirements.txt` includes: Flask, Flask-CORS, Pandas, NumPy, SQLAlchemy, PyArrow, psycopg2-binary.
 
-#### 3. Set Up Database (Member B)
+---
+
+### Step 3 — Process the Raw Data (Member A)
+
+Place the raw dataset files in the `data/` folder:
+- `data/yellow_tripdata.csv` (or `.parquet`)
+- `data/taxi_zone_lookup.csv`
+
+Then run the processing pipeline:
+
 ```bash
-# Create database
+cd backend
+python data_processing.py
+```
+
+This will:
+- Load and clean 7.6M+ raw records
+- Apply outlier thresholds and handle missing values
+- Engineer 3 derived features: `trip_duration_minutes`, `avg_speed_mph`, `fare_per_mile`
+- Export `cleaned_taxi_data.csv` (50,000 records) to `backend/` and `shared/`
+- Generate `exclusion_log.txt` and `processing_report.txt`
+
+---
+
+### Step 4 — Set Up the Database (Member B)
+
+The backend is pre-configured to use SQLite (`backend/taxi_db.sqlite`) for zero-configuration setup.
+
+To import data into the SQLite database:
+
+```bash
+cd backend
+python import_to_database.py
+```
+
+**To use PostgreSQL instead**, update `backend/config.py`:
+
+```python
+# Replace this line:
+DATABASE_URL = "sqlite:///taxi_db.sqlite"
+
+# With your PostgreSQL connection string:
+DATABASE_URL = "postgresql://username:password@localhost:5432/taxi_db"
+```
+
+Then create the database and import:
+
+```bash
 createdb taxi_db
-
-# Import cleaned data
-python import_data.py
-
-# Update backend/config.py with connection string
+python import_to_database.py
 ```
 
-#### 4. Set Up Frontend (Member C)
+---
+
+### Step 5 — Start the Backend API
+
 ```bash
-# Open index.html in browser
-# Or use a simple HTTP server:
-python -m http.server 8000
+cd backend
+python app.py
 ```
 
-**Frontend will run at**: `http://localhost:8000`
+The API will run at: `http://localhost:5000`
 
----
+Verify it is working by visiting: `http://localhost:5000/api/health`
 
-## 📁 Project Structure
-
-```
-nyc-taxi-trip-analyzer/
-│
-├── backend/                    # 🔧 Member A - Backend
-│   ├── app.py                 # Flask REST API (626 lines)
-│   ├── config.py              # Configuration
-│   ├── data_processing.py     # ETL Pipeline (500+ lines)
-│   ├── requirements.txt       # Python dependencies
-│   ├── quick_start.py        # Setup diagnostic tool
-│   │
-│   ├── README_BACKEND.md     # Complete API documentation
-│   ├── HANDOVER_TO_TEAM.md   # Team coordination guide
-│   ├── COMPLETE_PACKAGE_SUMMARY.md  # Deliverables summary
-│   │
-│   ├── cleaned_taxi_data.csv  # Processed data (50K records)
-│   ├── exclusion_log.txt     # Data quality report
-│   └── processing_report.txt  # Processing log
-│
-├── shared/                     # 📦 Shared files
-│   └── cleaned_taxi_data.csv  # Copy for Member B
-│
-├── data/                       # 📥 Raw input data
-│   ├── yellow_tripdata.csv    # Raw trip data
-│   └── taxi_zone_lookup.csv   # Zone lookup table
-│
-├── frontend/                   # 🎨 Member C - Frontend (to be created)
-│   ├── index.html
-│   ├── dashboard.js
-│   └── styles.css
-│
-├── database/                   # 💾 Member B - Database (to be created)
-│   ├── schema.sql
-│   ├── import_data.py
-│   └── queries.sql
-│
-├── docs/                       # 📄 Documentation (to be created)
-│   ├── technical_report.pdf
-│   ├── team_participation.xlsx
-│   └── architecture.png
-│
-└── README.md                   # This file
+Expected response:
+```json
+{
+  "success": true,
+  "message": "NYC Taxi Trip Analyzer API is running",
+  "database": "connected"
+}
 ```
 
 ---
 
-## 🔌 API Endpoints
+### Step 6 — Launch the Frontend Dashboard (Member C)
+
+Open a new terminal from the project root:
+
+```bash
+python -m http.server 8000 --directory frontend
+```
+
+Then open your browser at: `http://localhost:8000`
+
+Alternatively, open `frontend/index.html` directly in your browser.
+
+> The dashboard connects automatically to the backend at `http://localhost:5000/api`. If the backend is offline, sample data is displayed so the page remains functional.
+
+---
+
+## Project Structure
+
+```
+nyc-taxi-analytics/
+|
++-- backend/
+|   +-- app.py                   # Flask REST API (11 endpoints)
+|   +-- config.py                # Database and API configuration
+|   +-- data_processing.py       # ETL pipeline
+|   +-- import_to_database.py    # Database import script
+|   +-- requirements.txt         # Python dependencies
+|   +-- cleaned_taxi_data.csv    # Processed data (50,000 records)
+|   +-- exclusion_log.txt        # Records excluded and reasons
+|   +-- processing_report.txt    # Full processing pipeline log
+|   +-- taxi_db.sqlite           # SQLite database (auto-generated)
+|
++-- frontend/
+|   +-- index.html               # Dashboard HTML structure
+|   +-- styles.css               # Dark professional CSS theme
+|   +-- dashboard.js             # Chart.js charts, API calls, filters
+|
++-- data/
+|   +-- yellow_tripdata.csv      # Raw trip data (place here)
+|   +-- taxi_zone_lookup.csv     # Zone lookup table (place here)
+|
++-- shared/
+|   +-- cleaned_taxi_data.csv    # Shared clean data copy
+|
++-- docs/
+|   +-- REPORT.md                # Technical documentation report
+|
++-- README.md
+```
+
+---
+
+## API Endpoints
 
 **Base URL**: `http://localhost:5000/api`
 
-### Health & Testing
-- `GET /api/health` - API health check
-- `GET /api/test` - Database connection test
+| Endpoint | Method | Description |
+|---|---|---|
+| `/health` | GET | API and database status check |
+| `/test` | GET | Database connectivity test |
+| `/trips` | GET | Trip records with optional filters |
+| `/insights/daily_trips` | GET | Daily aggregations |
+| `/insights/hourly_pattern` | GET | Trip volume and speed by hour (0-23) |
+| `/insights/day_of_week` | GET | Trip patterns Monday-Sunday |
+| `/insights/top_locations` | GET | Top pickup or dropoff zones |
+| `/insights/borough_stats` | GET | Statistics aggregated by borough |
+| `/insights/fare_distribution` | GET | Trip count by fare range bucket |
+| `/insights/distance_distribution` | GET | Trip count by distance range bucket |
+| `/stats/summary` | GET | Overall dataset summary statistics |
 
-### Data Retrieval
-- `GET /api/trips` - Get trip records with filters
-
-**Example**: `/api/trips?borough=Manhattan&limit=50`
-
-### Temporal Insights
-- `GET /api/insights/daily_trips` - Daily aggregations
-- `GET /api/insights/hourly_pattern` - Hourly patterns
-- `GET /api/insights/day_of_week` - Day of week patterns
-
-### Location Insights
-- `GET /api/insights/top_locations` - Top pickup/dropoff zones
-- `GET /api/insights/borough_stats` - Borough statistics
-
-### Distributions
-- `GET /api/insights/fare_distribution` - Fare distribution
-- `GET /api/insights/distance_distribution` - Distance distribution
-
-### Statistics
-- `GET /api/stats/summary` - Overall summary statistics
-
-**Full API Documentation**: See `backend/README_BACKEND.md`
+**Filter parameters for `/trips`**:
+- `borough` — Manhattan, Brooklyn, Queens, Bronx, Staten Island
+- `min_fare`, `max_fare` — fare range in dollars
+- `min_distance`, `max_distance` — trip distance in miles
+- `date` — YYYY-MM-DD format
+- `limit` — number of records (max 1000)
 
 ---
 
-## 🔬 Derived Features
+## Derived Features
 
-### Three Main Engineered Features:
+Three features were engineered from the raw data:
 
-#### 1. trip_duration_minutes
-```python
-duration = (dropoff_time - pickup_time).total_seconds() / 60
-```
-**Justification**: Essential for speed calculations and temporal analysis. Reveals trip efficiency and traffic patterns.
-
-#### 2. avg_speed_mph
-```python
-speed = trip_distance / (duration_minutes / 60)
-```
-**Justification**: Indicates traffic conditions, identifies rush hours, provides insights into urban mobility patterns.
-
-#### 3. fare_per_mile
-```python
-fare_per_mile = fare_amount / trip_distance
-```
-**Justification**: Identifies pricing patterns, reveals surge pricing, enables economic analysis across routes and boroughs.
+| Feature | Formula | Purpose |
+|---|---|---|
+| `trip_duration_minutes` | `(dropoff_time - pickup_time) / 60` | Enables speed calculation and temporal analysis |
+| `avg_speed_mph` | `trip_distance / (duration_minutes / 60)` | Reveals traffic conditions and rush-hour patterns |
+| `fare_per_mile` | `fare_amount / trip_distance` | Economic analysis across routes and boroughs |
 
 ---
 
-## 📊 Data Cleaning Process
+## Data Cleaning Summary
 
-### Quality Checks:
-- ✅ Removed duplicates
-- ✅ Handled missing values
-- ✅ Removed outliers:
-  - Passengers: 1-6
-  - Distance: 0.1-100 miles
-  - Fare: $2.50-$500
-  - Speed: 0.1-80 mph
-  - Duration: 1-180 minutes
+| Stage | Records Removed | Remaining |
+|---|---|---|
+| Original dataset | — | 7,667,792 |
+| Duplicates | 0 | 7,667,792 |
+| Passenger count (1-6) | 117,438 | 7,550,354 |
+| Trip distance (0.1-100 mi) | 68,815 | 7,476,069 |
+| Fare amount ($2.50-$500) | 5,470 | 7,470,599 |
+| Duration (1-180 minutes) | 38,713 | 7,435,495 |
+| Speed (0.1-80 mph) | 421 | 7,435,074 |
+| Fare per mile (> $100) | 1,440 | 7,433,634 |
+| Final sample (seed 42) | — | 50,000 |
 
-### Results:
-- Original records: ~700K+
-- Final clean records: 50,000
-- Exclusion log maintained for transparency
-
-**Details**: See `backend/exclusion_log.txt`
+Full exclusion log: `backend/exclusion_log.txt`
 
 ---
 
-## 🔄 Workflow & Timeline
+## Troubleshooting
 
-### Day 1 - Foundation ✅
-- [x] Member A: Data processing complete
-- [x] Member A: API development complete
-- [ ] Member B: Database setup
-- [ ] Member B: Data import
-
-### Day 2 - Integration
-- [ ] Member A: Connect to database
-- [ ] Member C: Build frontend
-- [ ] Member C: Create visualizations
-- [ ] All: Integration testing
-
-### Day 3 - Finalization
-- [ ] All: Final testing
-- [ ] Member C: Record video walkthrough
-- [ ] All: Complete documentation
-- [ ] All: Submit deliverables
-
----
-
-## 📝 Deliverables
-
-### Required Submissions:
-
-1. **Codebase (.zip)** + **GitHub Link**
-   - All source code
-   - Clean project structure
-   - README with setup instructions
-
-2. **Team Participation Sheet**
-   - Role assignments
-   - Meeting notes
-   - Individual contributions
-
-3. **Database Files**
-   - Schema SQL files
-   - Database dump
-   - Sample queries
-
-4. **PDF Documentation Report**
-   - System architecture
-   - Technical descriptions
-   - Insights and findings
-   - Reflections
-
-5. **Video Walkthrough (5 minutes)**
-   - System demonstration
-   - Architecture explanation
-   - Feature showcase
-   - Technical insights
-
----
-
-## 🎥 Video Walkthrough Structure
-
-### Timeline (5 minutes):
-
-**0:00-0:30** - Introduction
-- Project overview
-- Team member roles
-
-**0:30-1:30** - Dashboard Demonstration
-- Live data exploration
-- Filtering and sorting
-- Key visualizations
-
-**1:30-2:30** - Architecture Explanation
-- System components
-- Data flow
-- Technology choices
-
-**2:30-3:30** - Key Insights
-- Derived features explanation
-- Data patterns discovered
-- Business value
-
-**3:30-4:30** - Code Walkthrough
-- Backend highlights
-- Database design
-- Frontend implementation
-
-**4:30-5:00** - Conclusion
-- Challenges overcome
-- Lessons learned
-- Future improvements
-
----
-
-## 🤝 Team Coordination
-
-### Current Status:
-
-#### Member A (Backend) - ✅ COMPLETE
-**Delivered:**
-- Cleaned data: `cleaned_taxi_data.csv`
-- Flask API: All 11 endpoints functional
-- Documentation: Complete API reference
-- Handover guide: For Members B and C
-
-**Next**: Waiting for database connection string from Member B
-
-#### Member B (Database) - ⏳ IN PROGRESS
-**Needs from Member A:**
-- `cleaned_taxi_data.csv` ✅ Ready
-- `taxi_zone_lookup.csv` ✅ Ready
-- Database schema recommendations ✅ Provided
-
-**Deliverables to Member A:**
-- Database connection string
-- Confirmation of data import
-- Total record count validation
-
-#### Member C (Frontend) - ⏳ PENDING
-**Needs from Member A:**
-- API base URL ✅ Ready: `http://localhost:5000/api`
-- API documentation ✅ Ready
-- Sample endpoints for testing ✅ Ready
-
-**Needs from Project:**
-- Backend server running ⏳ Waiting for database
-- Sample data from API ⏳ Waiting for database
-
----
-
-## 📚 Documentation
-
-### For Teammates:
-
-**Member A's Documentation:**
-- `backend/README_BACKEND.md` - Complete API reference
-- `backend/HANDOVER_TO_TEAM.md` - Team coordination guide
-- `backend/COMPLETE_PACKAGE_SUMMARY.md` - Deliverables summary
-
-**Quick Start:**
-- `backend/quick_start.py` - Automated setup checker
-
-**Logs & Reports:**
-- `backend/exclusion_log.txt` - Data quality documentation
-- `backend/processing_report.txt` - Processing pipeline log
-
----
-
-## 🐛 Troubleshooting
-
-### Backend won't start?
+**Backend will not start**
 ```bash
-# Check dependencies
 python backend/quick_start.py
-
-# Install missing packages
 pip install -r backend/requirements.txt
 ```
 
-### Database connection failed?
-- Verify PostgreSQL is running
-- Check connection string in `backend/config.py`
-- Try SQLite fallback (see config.py)
+**Database connection failed**
+- Verify `DATABASE_URL` in `backend/config.py`
+- For SQLite: ensure `backend/taxi_db.sqlite` exists (run `import_to_database.py`)
+- For PostgreSQL: ensure the server is running and credentials are correct
 
-### Frontend can't connect to API?
-- Ensure backend is running: `http://localhost:5000/api/health`
-- Check CORS is enabled (already configured)
-- Verify API base URL in frontend code
+**Frontend shows no data**
+- Confirm backend is running at `http://localhost:5000/api/health`
+- Confirm the URL uses `http://` not `https://`
+- Check browser console for CORS errors
 
-### Data processing errors?
-- Check raw data files in `data/` folder
-- Verify file names match configuration
-- See `backend/processing_report.txt` for details
-
----
-
-## 📞 Support
-
-### Architecture Questions?
-- See: `backend/README_BACKEND.md`
-- Contact: Member A
-
-### Database Questions?
-- See: `backend/HANDOVER_TO_TEAM.md` (Database section)
-- Contact: Member B
-
-### Frontend Questions?
-- See: `backend/README_BACKEND.md` (For Member C section)
-- Contact: Member C
+**Charts not rendering**
+- Confirm internet access (Chart.js is loaded from CDN)
+- Check browser developer console for JavaScript errors
+- Ensure `dashboard.js` is in the same folder as `index.html`
 
 ---
 
-## 🏆 Success Criteria
+## Documentation
 
-### ✅ Ready for submission when:
-
-**Technical:**
-- [ ] Backend API running and returning data
-- [ ] Database populated with cleaned data
-- [ ] Frontend displaying visualizations
-- [ ] All components integrated successfully
-
-**Documentation:**
-- [ ] README complete with setup instructions
-- [ ] Technical report written
-- [ ] Team participation sheet filled
-- [ ] Video walkthrough recorded
-
-**Quality:**
-- [ ] No errors in console
-- [ ] All filters working
-- [ ] Data visualizations meaningful
-- [ ] Code well-commented
+- Technical Report: `docs/REPORT.md`
+- API Reference: `backend/README_BACKEND.md`
+- Processing Log: `backend/processing_report.txt`
+- Exclusion Log: `backend/exclusion_log.txt`
 
 ---
 
-## 📄 License
+## Acknowledgments
 
-Academic project for educational purposes.
-
----
-
-## 🙏 Acknowledgments
-
-- NYC Taxi & Limousine Commission for providing open data
-- Course instructors and teaching assistants
-- Team members for collaborative effort
+NYC Taxi and Limousine Commission for providing open trip record data.
 
 ---
 
-## 📅 Project Timeline
+*Last updated: February 2026*
 
-**Start Date**: Day 1  
-**Current Status**: Member A Complete, Waiting for Member B  
-**Target Completion**: Day 3  
-**Submission Deadline**: [Your deadline here]
 
----
-
-**Member A - Backend Component: COMPLETE ✅**  
-**Member B - Database Component: IN PROGRESS ⏳**  
-**Member C - Frontend Component: PENDING ⏳**
-
-Last Updated: Day 1, End of Development Sprint
