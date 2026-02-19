@@ -31,10 +31,11 @@ class Config:
     #   SQLite:     "sqlite:///taxi_db.sqlite"
     # ========================================================================
     
-    # DATABASE_URL = os.environ.get('DATABASE_URL') or "postgresql://postgres:password@localhost:5432/taxi_db"
+    # SQLite for local development (works without PostgreSQL installation)
+    DATABASE_URL = "sqlite:///taxi_db.sqlite"
     
-    # ✅ Member B database setup complete — PostgreSQL
-    DATABASE_URL = "postgresql://postgres:Chris12@localhost:5432/taxi_db"
+    # PostgreSQL (uncomment below and comment SQLite above when on same network as Member B):
+    # DATABASE_URL = "postgresql://postgres:Chris12@192.168.0.201:5432/taxi_db"
     
     # ========================================================================
     # API CONFIGURATION
