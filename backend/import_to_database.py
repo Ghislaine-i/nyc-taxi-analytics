@@ -10,7 +10,7 @@ Supports both PostgreSQL and SQLite
 """
 
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import sys
 import os
 
@@ -109,10 +109,12 @@ try:
     
     # Test connection
     with engine.connect() as conn:
-        result = conn.execute("SELECT 1")
+        result = conn.execute(text("SELECT 1"))
         result.fetchone()
     
     print("✓ Database connection successful!")
+
+    
     
 except Exception as e:
     print(f"❌ ERROR: Could not connect to database")
@@ -123,6 +125,17 @@ except Exception as e:
     print("  - PostgreSQL: Make sure PostgreSQL service is running")
     print("  - SQLite: Make sure you have write permissions in this directory")
     sys.exit(1)
+
+
+# Drop existing tables safely (PostgreSQL only)
+if 'postgresql' in DATABASE_URL:
+    print("Dropping existing tables (if any)...")
+    with engine.connect() as conn:
+        conn.execute(text("DROP TABLE IF EXISTS trips CASCADE"))
+        conn.execute(text("DROP TABLE IF EXISTS locations CASCADE"))
+        conn.commit()
+    print("✓ Old tables dropped")
+
 
 # ===================================================================
 # IMPORT LOCATIONS DATA
@@ -211,10 +224,10 @@ try:
                 # Check if this is SQLite or PostgreSQL
                 if 'sqlite' in DATABASE_URL:
                     # SQLite syntax
-                    conn.execute(f"CREATE INDEX IF NOT EXISTS {idx_name} ON {table}({column})")
+                    conn.execute(text(f"CREATE INDEX IF NOT EXISTS {idx_name} ON {table}({column})"))
                 else:
                     # PostgreSQL syntax
-                    conn.execute(f"CREATE INDEX IF NOT EXISTS {idx_name} ON {table}({column})")
+                    conn.execute(text(f"CREATE INDEX IF NOT EXISTS {idx_name} ON {table}({column})"))
                 
                 print(f"   ✓ Created index: {idx_name}")
             except Exception as e:
