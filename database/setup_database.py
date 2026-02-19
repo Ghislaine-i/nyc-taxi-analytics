@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""
-NYC Taxi Trip Analyzer - Database Setup Script (PostgreSQL)
-Member B: Database Design & Implementation
 
-This script:
-  1. Connects to PostgreSQL and creates the schema from schema.sql
-  2. Imports 265 taxi zones from data/taxi_zone_lookup.csv (official NYC TLC)
-  3. Imports 50,000 cleaned trip records from cleaned_taxi_data.csv
-  4. Validates record counts and data integrity
-  5. Prints the connection string for Member A's backend
-
-Prerequisites:
-    pip install psycopg2-binary
-
-Usage:
-    cd database
-    python setup_database.py
-"""
 
 import csv
 import os
@@ -309,22 +292,21 @@ def validate(conn, expected_locations, expected_trips):
     if trip_count == expected_trips and null_dt == 0:
         success("ALL VALIDATIONS PASSED")
     else:
-        print("  [WARN] Counts may differ slightly; review above.")
+        print("  [Counts may differ slightly; review above.")
 
 
 # ─── Step 5: Print handoff info ─────────────────────────────────────────────
 
 def print_handoff():
-    banner("DONE — HANDOFF INFO FOR MEMBER A")
+    banner("DONE ")
 
     print(f"""
   Database type   : PostgreSQL
   Connection URL  : {CONNECTION_STRING}
 
-  ──────────────────────────────────────────────────────
-  FOR MEMBER A:  Update backend/config.py:
+    Update backend/config.py:
       DATABASE_URL = "{CONNECTION_STRING}"
-  ──────────────────────────────────────────────────────
+  
 """)
 
 
@@ -333,10 +315,8 @@ def print_handoff():
 def main():
     print(
         """
-╔══════════════════════════════════════════════════════════════════╗
-║     NYC TAXI TRIP ANALYZER — DATABASE SETUP (Member B)          ║
-║     PostgreSQL Edition                                          ║
-╚══════════════════════════════════════════════════════════════════╝
+        NYC TAXI TRIP ANALYZER — DATABASE SETUP
+
 """
     )
 
@@ -351,7 +331,7 @@ def main():
         fail(
             f"Cleaned data not found.\n"
             f"  Expected at: {CSV_FILE}\n"
-            f"  Please ensure Member A's cleaned_taxi_data.csv is in shared/ or backend/"
+            f"  Please ensure  cleaned_taxi_data.csv is in shared/ or backend/"
         )
 
     # Step 0: Create database

@@ -1,20 +1,8 @@
--- ============================================================================
--- NYC TAXI TRIP ANALYZER — INSIGHT QUERIES
--- Member B: Database Design & Implementation
--- ============================================================================
--- Six analytical queries that power the dashboard insights and Section 4
--- of the project report. Each query is designed to run against the SQLite
--- database created by setup_database.py.
--- ============================================================================
--- Query 0: total trips count
+
 SELECT COUNT(*) AS total_trips
 FROM trips;
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 1: Top 10 Busiest Pickup Zones
--- Purpose : Identify the zones generating the most taxi demand
--- Insight : Manhattan dominates pickup volume, indicating commuter-heavy zones
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     pickup_borough,
@@ -29,11 +17,7 @@ ORDER BY trip_count DESC
 LIMIT 10;
 
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 2: Average Metrics by Borough
--- Purpose : Compare trip economics across NYC boroughs
--- Insight : Airport boroughs (Queens) show higher avg fares and distances
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     pickup_borough,
@@ -50,11 +34,7 @@ GROUP BY pickup_borough
 ORDER BY total_trips DESC;
 
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 3: Hourly Trip Volume Pattern (24-hour profile)
--- Purpose : Show how taxi demand fluctuates throughout the day
--- Insight : Evening rush (5-7 PM) peaks at 2-3x the early morning minimum
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     pickup_hour,
@@ -68,11 +48,7 @@ GROUP BY pickup_hour
 ORDER BY pickup_hour;
 
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 4: Day-of-Week Trip Pattern
--- Purpose : Reveal weekly demand cycles
--- Insight : Weekdays see higher volumes (commuters); weekends see longer trips
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     pickup_day_of_week,
@@ -87,11 +63,7 @@ GROUP BY pickup_day_of_week, pickup_day_name
 ORDER BY pickup_day_of_week;
 
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 5: Fare Distribution Buckets
--- Purpose : Show the spread of fare amounts across price ranges
--- Insight : Most trips fall in the $5-$15 range (short intra-Manhattan rides)
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     CASE
@@ -112,11 +84,7 @@ GROUP BY fare_bucket
 ORDER BY MIN(fare_amount);
 
 
--- ──────────────────────────────────────────────────────────────────────────────
--- QUERY 6: Peak Revenue Hours (Top 5)
--- Purpose : Identify when taxi services generate the most revenue
--- Insight : 6-7 PM produces the highest revenue — align fleet allocation
--- ──────────────────────────────────────────────────────────────────────────────
+
 
 SELECT
     pickup_hour,

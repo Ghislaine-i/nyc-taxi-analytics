@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""
-NYC Taxi Trip Analyzer - Run Insight Queries (PostgreSQL)
-Member B: Database Design & Implementation
 
-Executes the six insight queries from insight_queries.sql against the
-PostgreSQL database and prints formatted results. Also saves results as JSON
-for use in the project report.
-
-Prerequisites:
-    pip install psycopg2-binary
-
-Usage:
-    cd database
-    python run_insights.py
-"""
 
 import json
 import os
@@ -23,7 +9,7 @@ import sys
 try:
     import psycopg2
 except ImportError:
-    print("\n  [ERROR] psycopg2 is not installed.")
+    print("\n   psycopg2 is not installed.")
     print("  Run: pip install psycopg2-binary")
     sys.exit(1)
 
@@ -40,10 +26,7 @@ DB_PORT = "5432"
 
 
 def parse_queries(sql_file):
-    """
-    Split the SQL file into individual named queries.
-    Each query is preceded by a comment block containing 'QUERY N: Title'.
-    """
+    
     with open(sql_file, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -124,7 +107,7 @@ def main():
             port=DB_PORT
         )
     except psycopg2.OperationalError as e:
-        print(f"[ERROR] Could not connect to PostgreSQL: {e}")
+        print(f"Could not connect to PostgreSQL: {e}")
         print("  Make sure PostgreSQL is running and taxi_db exists.")
         print("  Run setup_database.py first.")
         sys.exit(1)
@@ -133,7 +116,7 @@ def main():
 
     queries = parse_queries(SQL_FILE)
     if not queries:
-        print("[ERROR] No queries found in SQL file.")
+        print(" No queries found in SQL file.")
         sys.exit(1)
 
     all_results = {}

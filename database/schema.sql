@@ -1,18 +1,4 @@
--- ============================================================================
--- NYC TAXI TRIP ANALYZER - DATABASE SCHEMA (PostgreSQL)
--- Member B: Database Design & Implementation
--- ============================================================================
--- Database Engine : PostgreSQL
--- Dataset         : 50,000 cleaned NYC yellow taxi trip records (Jan 2019)
--- Source          : Member A's cleaned_taxi_data.csv
--- ============================================================================
 
--- ==================================================================
--- TABLE 1: LOCATIONS (Dimension Table)
--- ==================================================================
--- Stores unique taxi zone information for pickup and dropoff locations.
--- Based on the NYC TLC Taxi Zone Lookup table.
--- ==================================================================
 
 CREATE TABLE IF NOT EXISTS locations (
     location_id   INTEGER PRIMARY KEY,            -- TLC LocationID (1-263)
@@ -22,12 +8,7 @@ CREATE TABLE IF NOT EXISTS locations (
 );
 
 
--- ==================================================================
--- TABLE 2: TRIPS (Fact Table)
--- ==================================================================
--- Stores individual taxi trip records with original fields, derived
--- features engineered by Member A, and denormalized location names.
--- ==================================================================
+
 
 CREATE TABLE IF NOT EXISTS trips (
     trip_id                   SERIAL PRIMARY KEY,
@@ -85,9 +66,7 @@ CREATE TABLE IF NOT EXISTS trips (
 );
 
 
--- ==================================================================
--- INDEXES FOR QUERY PERFORMANCE
--- ==================================================================
+
 
 -- Temporal indexes (hourly/daily pattern queries)
 CREATE INDEX IF NOT EXISTS idx_trips_pickup_datetime    ON trips(tpep_pickup_datetime);
