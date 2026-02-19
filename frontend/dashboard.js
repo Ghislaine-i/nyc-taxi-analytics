@@ -56,11 +56,14 @@ let locationMode = "pickup";
 
 async function fetchAPI(path) {
   try {
+    console.log("[API] Fetching:", API_BASE + path);
     const res = await fetch(API_BASE + path);
     if (!res.ok) throw new Error("HTTP " + res.status);
-    return await res.json();
+    const data = await res.json();
+    console.log("[API] Response:", path, data);
+    return data;
   } catch (err) {
-    console.warn("API call failed:", path, err.message);
+    console.error("[API] Failed:", path, err.message);
     return null;
   }
 }
@@ -544,22 +547,43 @@ async function loadBoroughCompareChart() {
 // ── DATA TABLE ────────────────────────────────────────────────────────
 
 async function loadTripsTable() {
-  var limit = document.getElementById("tableLimit").value;
+  var limitSelect = document.getElementById("tableLimit");
+  var limit = limitSelect ? limitSelect.value : 50;
   var tbody = document.getElementById("tableBody");
   var footer = document.getElementById("tableFooter");
+
+  if (!tbody) {
+    console.error("[Table] tbody element not found");
+    return;
+  }
 
   tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">Loading records...</td></tr>';
 
   var qs = buildQueryString({ limit: limit });
+  console.log("[Table] Loading trips with query:", qs);
   var result = await fetchAPI("/trips" + qs);
 
-  if (!result || !result.success || !result.data.length) {
-    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">No data returned. Check that the backend is running.</td></tr>';
-    footer.textContent = "0 records";
+  // Check if we have valid data
+  if (!result) {
+    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">API request failed. Check browser console (F12).</td></tr>';
+    if (footer) footer.textContent = "Error loading data";
+    return;
+  }
+
+  if (!result.success) {
+    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">API error: ' + (result.error || 'Unknown') + '</td></tr>';
+    if (footer) footer.textContent = "0 records";
+    return;
+  }
+
+  if (!result.data || result.data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">No trips match the current filters.</td></tr>';
+    if (footer) footer.textContent = "0 records";
     return;
   }
 
   var rows = result.data;
+  console.log("[Table] Rendering", rows.length, "rows");
   tbody.innerHTML = rows.map(function (r) {
     var bc = boroughClass(r.pickup_borough);
     return "<tr>" +
@@ -578,7 +602,7 @@ async function loadTripsTable() {
       "</tr>";
   }).join("");
 
-  footer.textContent = "Showing " + rows.length + " of " + fmtNumber(result.count) + " records";
+  if (footer) footer.textContent = "Showing " + rows.length + " of " + fmtNumber(result.count) + " records";
 }
 
 
@@ -596,6 +620,9 @@ function applyFilters() {
   if (maxFare) filters.max_fare = maxFare;
   if (date) filters.date = date;
 
+  console.log("[Filters] Applied:", filters);
+  
+  // Reload the trips table with new filters
   loadTripsTable();
 }
 
@@ -605,6 +632,9 @@ function resetFilters() {
   document.getElementById("filterMaxFare").value = "";
   document.getElementById("filterDate").value = "";
   filters = {};
+  console.log("[Filters] Reset");
+  
+  // Reload table and KPI
   loadTripsTable();
   loadKPI();
 }
@@ -613,20 +643,28 @@ function resetFilters() {
 // ── INIT ──────────────────────────────────────────────────────────────
 
 async function initDashboard() {
+  console.log("[Init] Starting dashboard initialization...");
+  
   await checkConnection();
 
   // Load all sections in parallel
-  await Promise.all([
-    loadKPI(),
-    loadHourlyChart(),
-    loadBoroughPie(),
-    loadFareDistChart(),
-    loadDistDistChart(),
-    loadDayOfWeekChart(),
-    loadTopLocationsChart("pickup"),
-    loadBoroughCompareChart(),
-    loadTripsTable(),
-  ]);
+  console.log("[Init] Loading all dashboard sections...");
+  try {
+    await Promise.all([
+      loadKPI(),
+      loadHourlyChart(),
+      loadBoroughPie(),
+      loadFareDistChart(),
+      loadDistDistChart(),
+      loadDayOfWeekChart(),
+      loadTopLocationsChart("pickup"),
+      loadBoroughCompareChart(),
+      loadTripsTable(),
+    ]);
+    console.log("[Init] Dashboard loaded successfully!");
+  } catch (err) {
+    console.error("[Init] Error loading dashboard:", err);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", initDashboard);
