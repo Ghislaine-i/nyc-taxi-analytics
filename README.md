@@ -28,15 +28,15 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 **Status**: COMPLETE
 **Files Ready**: See `backend/` folder
 
-### Member B - Database Design & Implementation ⏳
+### Member B - Database Design & Implementation ✅
 **Responsibilities:**
 - Database schema design
 - Data import and indexing
 - Query optimization
 - Data integrity validation
 
-**Status**: WAITING FOR MEMBER B
-**Needs**: `cleaned_taxi_data.csv` from Member A
+**Status**: COMPLETE
+**Files Ready**: See `database/` folder
 
 ### Member C - Frontend Dashboard ⏳
 **Responsibilities:**
@@ -45,8 +45,8 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 - User interface design
 - Frontend documentation
 
-**Status**: WAITING FOR API CONNECTION
-**Needs**: Backend running + database connected
+**Status**: WAITING FOR FRONTEND BUILD
+**Needs**: Backend running (ready now)
 
 ---
 
@@ -78,7 +78,7 @@ This is a comprehensive fullstack application for analyzing NYC taxi trip data. 
 ```
 ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
 │   Raw Data  │─────▶│   Backend   │─────▶│  Database   │
-│  (CSV/PKT)  │      │  (Flask)    │      │(PostgreSQL) │
+│  (CSV/PKT)  │      │  (Flask)    │      │  (SQLite)   │
 └─────────────┘      └──────┬──────┘      └─────────────┘
                             │
                             │ REST API
@@ -125,13 +125,10 @@ python app.py                 # Start API server
 
 #### 3. Set Up Database (Member B)
 ```bash
-# Create database
-createdb taxi_db
-
-# Import cleaned data
-python import_data.py
-
-# Update backend/config.py with connection string
+cd database
+python setup_database.py    # Creates SQLite DB + imports data (~10s)
+python run_insights.py      # Runs insight queries + saves JSON
+python export_dump.py       # Generates SQL dump for submission
 ```
 
 #### 4. Set Up Frontend (Member C)
@@ -177,12 +174,17 @@ nyc-taxi-trip-analyzer/
 │   ├── dashboard.js
 │   └── styles.css
 │
-├── database/                   # 💾 Member B - Database (to be created)
-│   ├── schema.sql
-│   ├── import_data.py
-│   └── queries.sql
+├── database/                   # 💾 Member B - Database ✅
+│   ├── schema.sql              # Formal SQL schema
+│   ├── setup_database.py       # One-command DB setup script
+│   ├── insight_queries.sql     # 6 analytical queries
+│   ├── run_insights.py         # Run queries + export JSON
+│   ├── export_dump.py          # Generate SQL dump
+│   ├── SECTION_4_INSIGHTS.md   # Section 4 report content
+│   ├── taxi_trips.db           # Populated SQLite database
+│   └── taxi_db_dump.sql        # SQL dump for submission
 │
-├── docs/                       # 📄 Documentation (to be created)
+├── docs/                       # 📄 Documentation (Member C)
 │   ├── technical_report.pdf
 │   ├── team_participation.xlsx
 │   └── architecture.png
@@ -499,14 +501,14 @@ Academic project for educational purposes.
 ## 📅 Project Timeline
 
 **Start Date**: Day 1  
-**Current Status**: Member A Complete, Waiting for Member B  
+**Current Status**: Member A + B Complete, Waiting for Member C  
 **Target Completion**: Day 3  
 **Submission Deadline**: [Your deadline here]
 
 ---
 
 **Member A - Backend Component: COMPLETE ✅**  
-**Member B - Database Component: IN PROGRESS ⏳**  
+**Member B - Database Component: COMPLETE ✅**  
 **Member C - Frontend Component: PENDING ⏳**
 
-Last Updated: Day 1, End of Development Sprint
+Last Updated: Day 2

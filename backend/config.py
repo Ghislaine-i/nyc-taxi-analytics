@@ -33,11 +33,8 @@ class Config:
     
     # DATABASE_URL = os.environ.get('DATABASE_URL') or "postgresql://postgres:password@localhost:5432/taxi_db"
     
-    # For SQLite (fallback if PostgreSQL not available):
-    # ⚠️ TEMPORARY - Using SQLite for testing until Member B provides database
-    DATABASE_URL = "sqlite:///taxi_db.sqlite"
-    
-    # ⬆️ Member B: Replace this line with your connection string when ready!
+    # ✅ Member B database setup complete — PostgreSQL
+    DATABASE_URL = "postgresql://postgres:Chris12@localhost:5432/taxi_db"
     
     # ========================================================================
     # API CONFIGURATION
