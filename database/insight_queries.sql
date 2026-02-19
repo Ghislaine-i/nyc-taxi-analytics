@@ -6,7 +6,9 @@
 -- of the project report. Each query is designed to run against the SQLite
 -- database created by setup_database.py.
 -- ============================================================================
-
+-- Query 0: total trips count
+SELECT COUNT(*) AS total_trips
+FROM trips;
 
 -- ──────────────────────────────────────────────────────────────────────────────
 -- QUERY 1: Top 10 Busiest Pickup Zones
@@ -126,3 +128,19 @@ FROM trips
 GROUP BY pickup_hour
 ORDER BY total_revenue DESC
 LIMIT 5;
+
+-- QUERY 7: Distance vs Fare Relationship
+SELECT
+    ROUND(AVG(trip_distance), 2) AS avg_distance,
+    ROUND(AVG(fare_amount), 2) AS avg_fare,
+    ROUND(AVG(fare_per_mile), 2) AS avg_fare_per_mile,
+    CORR(trip_distance, fare_amount) AS distance_fare_correlation
+FROM trips;
+
+
+--if using SQlite
+SELECT
+    ROUND(AVG(trip_distance), 2) AS avg_distance,
+    ROUND(AVG(fare_amount), 2) AS avg_fare,
+    ROUND(AVG(fare_per_mile), 2) AS avg_fare_per_mile
+FROM trips;
