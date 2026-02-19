@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""
-NYC Taxi Trip Analyzer - Database Dump Export (PostgreSQL)
-Member B: Database Design & Implementation
 
-Generates a SQL dump file using pg_dump that can be used to recreate
-the entire database on any PostgreSQL-compatible system.
-
-Usage:
-    cd database
-    python export_dump.py
-"""
 
 import os
 import subprocess
