@@ -14,7 +14,7 @@ except ImportError:
     print("  Run: pip install psycopg2-binary")
     sys.exit(1)
 
-# ─── Configuration ───────────────────────────────────────────────────────────
+#  Configuration 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
@@ -35,8 +35,7 @@ if not os.path.exists(CSV_FILE):
     CSV_FILE = os.path.join(PROJECT_ROOT, "backend", "cleaned_taxi_data.csv")
 
 
-# ─── Helpers ─────────────────────────────────────────────────────────────────
-
+# Helpers
 def banner(text):
     width = 70
     print("\n" + "=" * width)
@@ -53,7 +52,7 @@ def fail(msg):
     sys.exit(1)
 
 
-# ─── Step 0: Create database if it doesn't exist ────────────────────────────
+#  Step 0: Create database if it doesn't exist
 
 def create_database_if_needed():
     banner("STEP 0: CHECKING / CREATING DATABASE")
@@ -97,7 +96,7 @@ def create_database_if_needed():
         )
 
 
-# ─── Step 1: Apply schema ───────────────────────────────────────────────────
+# Step 1: Apply schema
 
 def apply_schema(conn):
     banner("STEP 1: APPLYING SCHEMA")
@@ -116,7 +115,7 @@ def apply_schema(conn):
     success("Schema applied (locations + trips tables, indexes)")
 
 
-# ─── Step 2: Import locations from taxi_zone_lookup.csv ─────────────────────
+#  Step 2: Import locations from taxi_zone_lookup.csv
 
 def import_locations(conn):
     banner("STEP 2: IMPORTING LOCATIONS (taxi_zone_lookup.csv)")
@@ -155,7 +154,7 @@ def import_locations(conn):
     return count
 
 
-# ─── Step 3: Import trip records ────────────────────────────────────────────
+#  Step 3: Import trip records 
 
 def import_trips(conn):
     banner("STEP 3: IMPORTING TRIP RECORDS")
@@ -239,7 +238,7 @@ def import_trips(conn):
     return total
 
 
-# ─── Step 4: Validate ───────────────────────────────────────────────────────
+#  Step 4: Validate 
 
 def validate(conn, expected_locations, expected_trips):
     banner("STEP 4: VALIDATION")
@@ -295,7 +294,7 @@ def validate(conn, expected_locations, expected_trips):
         print("  [Counts may differ slightly; review above.")
 
 
-# ─── Step 5: Print handoff info ─────────────────────────────────────────────
+#  Step 5: Print handoff info 
 
 def print_handoff():
     banner("DONE ")
@@ -310,7 +309,7 @@ def print_handoff():
 """)
 
 
-# ─── Main ────────────────────────────────────────────────────────────────────
+#  Main 
 
 def main():
     print(
