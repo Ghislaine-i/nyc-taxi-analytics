@@ -418,6 +418,34 @@ body {
   gap: 10px;
 }
 
+.table-header.clickable {
+  cursor: pointer;
+  transition: background var(--ease);
+  border-bottom: none;
+}
+
+.table-header.clickable:hover {
+  background: var(--bg-card-hover);
+}
+
+.toggle-icon {
+  display: inline-block;
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--accent-blue);
+  font-size: 1.1rem;
+}
+
+.table-content {
+  border-top: 1px solid var(--border);
+}
+
+.table-controls-row {
+  padding: 12px 22px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .table-header h2 {
   font-size: 0.93rem;
   font-weight: 600;
@@ -443,6 +471,8 @@ body {
 
 .table-wrapper {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 400px;
   -webkit-overflow-scrolling: touch;
 }
 

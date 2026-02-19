@@ -25,10 +25,6 @@
           <p>Urban Mobility Analytics — NYC TLC Dataset</p>
         </div>
       </div>
-      <div class="header-status">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="connectionLabel">Connecting to API...</span>
-      </div>
     </div>
   </header>
 
@@ -95,6 +91,53 @@
           <div class="kpi-card">
             <span class="kpi-label">Average Duration</span>
             <span class="kpi-value" id="valAvgDuration"><span class="shimmer"></span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SAMPLE TRIPS - Collapsible detail view -->
+      <section class="table-section">
+        <div class="table-card collapsible">
+          <div class="table-header clickable" onclick="toggleTripsTable()">
+            <div>
+              <h2>Sample Trip Records <span class="toggle-icon" id="toggleIcon">+</span></h2>
+              <p class="chart-sub">Click to view individual trip details matching your filters</p>
+            </div>
+          </div>
+          <div class="table-content" id="tableContent" style="display: none;">
+            <div class="table-controls-row">
+              <div class="table-controls">
+                <label for="tableLimit">Show</label>
+                <select id="tableLimit" onchange="loadTripsTable()">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                </select>
+                <span>entries</span>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table id="tripsTable">
+                <thead>
+                  <tr>
+                    <th>Pickup Time</th>
+                    <th>Pickup Zone</th>
+                    <th>Dropoff Zone</th>
+                    <th>Borough</th>
+                    <th>Distance</th>
+                    <th>Duration</th>
+                    <th>Fare</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <tr>
+                    <td colspan="8" class="table-placeholder">Click header to load trips...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer" id="tableFooter"></div>
           </div>
         </div>
       </section>
@@ -190,53 +233,6 @@
           </div>
         </div>
 
-      </section>
-
-      <!-- DATA TABLE -->
-      <section class="table-section">
-        <div class="table-card">
-          <div class="table-header">
-            <div>
-              <h2>Trip Records</h2>
-              <p class="chart-sub">Live records from the database — use filters above to refine</p>
-            </div>
-            <div class="table-controls">
-              <label for="tableLimit">Show</label>
-              <select id="tableLimit" onchange="loadTripsTable()">
-                <option value="25">25</option>
-                <option value="50" selected>50</option>
-                <option value="100">100</option>
-              </select>
-              <span>entries</span>
-            </div>
-          </div>
-          <div class="table-wrapper">
-            <table id="tripsTable">
-              <thead>
-                <tr>
-                  <th>Pickup Time</th>
-                  <th>Dropoff Time</th>
-                  <th>Pickup Zone</th>
-                  <th>Dropoff Zone</th>
-                  <th>Borough</th>
-                  <th>Distance (mi)</th>
-                  <th>Duration (min)</th>
-                  <th>Fare ($)</th>
-                  <th>Tip ($)</th>
-                  <th>Total ($)</th>
-                  <th>Speed (mph)</th>
-                  <th>Passengers</th>
-                </tr>
-              </thead>
-              <tbody id="tableBody">
-                <tr>
-                  <td colspan="12" class="table-placeholder">Loading records...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-footer" id="tableFooter">Loading...</div>
-        </div>
       </section>
 
     </div>

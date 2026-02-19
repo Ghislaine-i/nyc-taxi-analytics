@@ -135,13 +135,19 @@ async function checkConnection() {
   const dot = document.getElementById("statusDot");
   const label = document.getElementById("connectionLabel");
   const result = await fetchAPI("/health");
-  if (result && result.success) {
-    dot.className = "status-dot connected";
-    label.textContent = result.database === "connected" ? "API connected" : "API running (DB offline)";
-  } else {
-    dot.className = "status-dot disconnected";
-    label.textContent = "API offline — displaying sample data";
+  
+  // Only update status elements if they exist
+  if (dot && label) {
+    if (result && result.success) {
+      dot.className = "status-dot connected";
+      label.textContent = result.database === "connected" ? "API connected" : "API running (DB offline)";
+    } else {
+      dot.className = "status-dot disconnected";
+      label.textContent = "API offline — displaying sample data";
+    }
   }
+  
+  return result && result.success;
 }
 
 
@@ -548,7 +554,7 @@ async function loadBoroughCompareChart() {
 
 async function loadTripsTable() {
   var limitSelect = document.getElementById("tableLimit");
-  var limit = limitSelect ? limitSelect.value : 50;
+  var limit = limitSelect ? limitSelect.value : 5;
   var tbody = document.getElementById("tableBody");
   var footer = document.getElementById("tableFooter");
 
@@ -557,7 +563,7 @@ async function loadTripsTable() {
     return;
   }
 
-  tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">Loading records...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="table-placeholder">Loading records...</td></tr>';
 
   var qs = buildQueryString({ limit: limit });
   console.log("[Table] Loading trips with query:", qs);
@@ -565,19 +571,19 @@ async function loadTripsTable() {
 
   // Check if we have valid data
   if (!result) {
-    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">API request failed. Check browser console (F12).</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="table-placeholder">API request failed. Check browser console (F12).</td></tr>';
     if (footer) footer.textContent = "Error loading data";
     return;
   }
 
   if (!result.success) {
-    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">API error: ' + (result.error || 'Unknown') + '</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="table-placeholder">API error: ' + (result.error || 'Unknown') + '</td></tr>';
     if (footer) footer.textContent = "0 records";
     return;
   }
 
   if (!result.data || result.data.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="12" class="table-placeholder">No trips match the current filters.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="table-placeholder">No trips match the current filters.</td></tr>';
     if (footer) footer.textContent = "0 records";
     return;
   }
@@ -588,17 +594,13 @@ async function loadTripsTable() {
     var bc = boroughClass(r.pickup_borough);
     return "<tr>" +
       "<td>" + formatDatetime(r.tpep_pickup_datetime) + "</td>" +
-      "<td>" + formatDatetime(r.tpep_dropoff_datetime) + "</td>" +
       "<td>" + (r.pickup_zone || "--") + "</td>" +
       "<td>" + (r.dropoff_zone || "--") + "</td>" +
       "<td><span class='badge badge-" + bc + "'>" + (r.pickup_borough || "--") + "</span></td>" +
-      "<td>" + fmtFixed(r.trip_distance, 2) + "</td>" +
-      "<td>" + fmtFixed(r.trip_duration_minutes, 1) + "</td>" +
+      "<td>" + fmtFixed(r.trip_distance, 1) + " mi</td>" +
+      "<td>" + fmtFixed(r.trip_duration_minutes, 0) + " min</td>" +
       "<td>" + fmtDollar(r.fare_amount) + "</td>" +
-      "<td>" + fmtDollar(r.tip_amount) + "</td>" +
       "<td>" + fmtDollar(r.total_amount) + "</td>" +
-      "<td>" + fmtFixed(r.avg_speed_mph, 1) + "</td>" +
-      "<td>" + (r.passenger_count != null ? r.passenger_count : "--") + "</td>" +
       "</tr>";
   }).join("");
 
@@ -622,8 +624,10 @@ function applyFilters() {
 
   console.log("[Filters] Applied:", filters);
   
-  // Reload the trips table with new filters
-  loadTripsTable();
+  // Reload the trips table if expanded
+  if (tableExpanded) {
+    loadTripsTable();
+  }
 }
 
 function resetFilters() {
@@ -634,9 +638,32 @@ function resetFilters() {
   filters = {};
   console.log("[Filters] Reset");
   
-  // Reload table and KPI
-  loadTripsTable();
+  // Reload table if expanded, and KPI
+  if (tableExpanded) {
+    loadTripsTable();
+  }
   loadKPI();
+}
+
+
+// ── COLLAPSIBLE TABLE ─────────────────────────────────────────────────
+
+let tableExpanded = false;
+
+function toggleTripsTable() {
+  const content = document.getElementById("tableContent");
+  const icon = document.getElementById("toggleIcon");
+  
+  tableExpanded = !tableExpanded;
+  
+  if (tableExpanded) {
+    content.style.display = "block";
+    icon.textContent = "−";
+    loadTripsTable(); // Load data when expanded
+  } else {
+    content.style.display = "none";
+    icon.textContent = "+";
+  }
 }
 
 
@@ -647,7 +674,7 @@ async function initDashboard() {
   
   await checkConnection();
 
-  // Load all sections in parallel
+  // Load all sections in parallel (table loads on expand)
   console.log("[Init] Loading all dashboard sections...");
   try {
     await Promise.all([
@@ -659,7 +686,6 @@ async function initDashboard() {
       loadDayOfWeekChart(),
       loadTopLocationsChart("pickup"),
       loadBoroughCompareChart(),
-      loadTripsTable(),
     ]);
     console.log("[Init] Dashboard loaded successfully!");
   } catch (err) {

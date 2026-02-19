@@ -60,13 +60,28 @@ def execute_query(query, params=None):
     
     try:
         df = pd.read_sql(query, engine, params=params)
+        # Replace NaN with None for valid JSON
+        df = df.where(pd.notnull(df), None)
         return df, None
     except Exception as e:
         return None, str(e)
 
 def success_response(data, count=None):
     """Standard success response format"""
-    response = {"success": True, "data": data}
+    # Handle NaN values in data (replace with None for valid JSON)
+    import math
+    
+    def clean_nan(obj):
+        if isinstance(obj, dict):
+            return {k: clean_nan(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [clean_nan(item) for item in obj]
+        elif isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+            return None
+        return obj
+    
+    cleaned_data = clean_nan(data)
+    response = {"success": True, "data": cleaned_data}
     if count is not None:
         response["count"] = count
     return jsonify(response)
